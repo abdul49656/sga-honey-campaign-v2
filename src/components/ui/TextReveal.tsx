@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, type ElementType } from "react";
+import { useRef, type ElementType } from "react";
 import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -18,35 +18,41 @@ export function TextReveal({
   children,
   as: Tag = "span",
   splitBy = "words",
-  stagger = 0.035,
+  stagger = 0.03,
   delay = 0,
   className,
   once = true,
 }: TextRevealProps) {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once, margin: "-100px" });
-  const [units, setUnits] = useState<string[]>([]);
+  const isInView = useInView(ref, { once, margin: "-80px" });
 
-  useEffect(() => {
-    if (splitBy === "chars") {
-      setUnits(children.split(""));
-    } else {
-      setUnits(children.split(" "));
-    }
-  }, [children, splitBy]);
+  const units =
+    splitBy === "chars" ? children.split("") : children.split(" ");
 
   return (
-    <Tag ref={ref} className={cn("inline-block", className)} aria-label={children}>
+    <Tag
+      ref={ref}
+      className={cn("inline-block", className)}
+      aria-label={children}
+    >
       {units.map((unit, i) => (
-        <span key={i} className="inline-block overflow-hidden" aria-hidden="true">
+        <span
+          key={i}
+          className="inline-block overflow-hidden pb-[0.15em] align-bottom"
+          aria-hidden="true"
+        >
           <motion.span
-            className="inline-block"
-            initial={{ y: "110%" }}
-            animate={isInView ? { y: "0%" } : { y: "110%" }}
+            className="inline-block will-change-transform"
+            initial={{ y: "105%", rotateX: -80, opacity: 0 }}
+            animate={
+              isInView
+                ? { y: "0%", rotateX: 0, opacity: 1 }
+                : { y: "105%", rotateX: -80, opacity: 0 }
+            }
             transition={{
-              duration: 0.5,
+              duration: 0.8,
               delay: delay + i * stagger,
-              ease: [0, 0, 0.2, 1],
+              ease: [0.16, 1, 0.3, 1],
             }}
           >
             {unit}

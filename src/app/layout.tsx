@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans, Figtree } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScroll";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -44,6 +45,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           {children}
         </SmoothScrollProvider>
+        <CustomCursor />
         <GrainOverlay />
       </body>
     </html>

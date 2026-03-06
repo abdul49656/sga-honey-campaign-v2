@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Eyebrow } from "@/components/ui/Eyebrow";
+import { TextReveal } from "@/components/ui/TextReveal";
+import { ParallaxLayer } from "@/components/ui/ParallaxLayer";
 
 const candidates = [
   {
@@ -15,139 +16,119 @@ const candidates = [
     initial: "H",
     name: "Honey",
     role: "Vice President",
-    bio: "A bridge-builder focused on campus unity and inclusion. Honey's background in community organizing and sustainability initiatives ensures every Bruin has a seat at the table.",
+    bio: "A bridge-builder focused on campus unity and inclusion. Honey\u2019s background in community organizing and sustainability initiatives ensures every Bruin has a seat at the table.",
   },
 ];
 
-export function Candidates() {
-  const sectionRef = useRef<HTMLElement>(null);
+function CandidateBlock({
+  candidate,
+  index,
+}: {
+  candidate: (typeof candidates)[0];
+  index: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
+    target: ref,
+    offset: ["start end", "end start"],
   });
-
-  const c1Opacity = useTransform(scrollYProgress, [0, 0.35, 0.45, 0.5], [1, 1, 0, 0]);
-  const c1Y = useTransform(scrollYProgress, [0, 0.35, 0.5], ["0%", "0%", "-15%"]);
-  const c2Opacity = useTransform(scrollYProgress, [0.45, 0.55, 1], [0, 1, 1]);
-  const c2Y = useTransform(scrollYProgress, [0.45, 0.55], ["15%", "0%"]);
-  const dot1 = useTransform(scrollYProgress, [0, 0.5], [1, 0.2]);
-  const dot2 = useTransform(scrollYProgress, [0, 0.5, 1], [0.2, 1, 1]);
-  const watermark1 = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
-  const watermark2 = useTransform(scrollYProgress, [0.5, 1], [0, 1]);
+  const watermarkY = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const isReversed = index % 2 !== 0;
 
   return (
-    <>
-      {/* Desktop: sticky scroll */}
-      <section
-        id="candidates"
-        ref={sectionRef}
-        className="relative hidden min-h-[200vh] md:block"
+    <div
+      ref={ref}
+      className="relative overflow-hidden py-10 md:py-16 lg:py-20"
+    >
+      {/* Watermark initial — clipped to prevent overflow */}
+      <motion.span
+        className="pointer-events-none absolute top-1/2 -translate-y-1/2 select-none font-[family-name:var(--font-cormorant)] text-[clamp(14rem,30vw,25rem)] font-bold leading-none text-dark/[0.05]"
+        style={{
+          y: watermarkY,
+          right: isReversed ? "auto" : "5%",
+          left: isReversed ? "5%" : "auto",
+        }}
+        aria-hidden="true"
       >
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-cream">
-          {/* Background watermark */}
-          <div
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
-            aria-hidden="true"
+        {candidate.initial}
+      </motion.span>
+
+      <div
+        className={`relative mx-auto flex max-w-[90rem] flex-col gap-8 px-6 md:flex-row md:items-center md:gap-12 md:px-10 lg:gap-20 lg:px-14 ${
+          isReversed ? "md:flex-row-reverse" : ""
+        }`}
+      >
+        {/* Visual element — initial in a card */}
+        <div className="flex flex-1 items-center justify-center">
+          <ParallaxLayer speed={0.1}>
+            <motion.div
+              className="animate-float relative flex h-56 w-56 items-center justify-center rounded-3xl bg-white md:h-72 md:w-72 lg:h-80 lg:w-80"
+              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="font-[family-name:var(--font-cormorant)] text-[clamp(5rem,10vw,8rem)] font-bold leading-none text-dark/30">
+                {candidate.initial}
+              </span>
+              {/* Gold accent line */}
+              <div className="absolute bottom-6 left-1/2 h-px w-12 -translate-x-1/2 bg-gold/40" />
+            </motion.div>
+          </ParallaxLayer>
+        </div>
+
+        {/* Text content in a card — centered */}
+        <motion.div
+          className="flex-1 flex flex-col items-center text-center rounded-3xl bg-white p-8 md:p-10"
+          style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="text-label text-gold">
+            {candidate.role}
+          </span>
+          <h3 className="mt-3 text-display-lg text-text-primary">
+            <TextReveal>{candidate.name}</TextReveal>
+          </h3>
+          <motion.div
+            className="mx-auto mt-4 h-px w-12 bg-gold/50"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          />
+          <motion.p
+            className="mt-6 max-w-md font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.8] text-text-secondary"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="select-none font-[family-name:var(--font-cormorant)] text-[30vw] font-bold leading-none text-dark/[0.02]">
-              <motion.span className="inline-block" style={{ opacity: watermark1 }}>
-                D
-              </motion.span>
-              <motion.span className="inline-block" style={{ opacity: watermark2 }}>
-                H
-              </motion.span>
-            </span>
-          </div>
+            {candidate.bio}
+          </motion.p>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
 
-          <div className="relative mx-auto w-full max-w-7xl px-8">
-            {/* Section label */}
-            <div className="absolute left-8 top-8">
-              <Eyebrow>Your Candidates</Eyebrow>
-            </div>
+export function Candidates() {
+  return (
+    <section id="candidates" className="overflow-hidden bg-cream-deep">
+      {/* Section label */}
+      <div className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14">
+        <span className="text-label text-text-muted">Your Candidates</span>
+        <h2 className="mt-3 text-display-md text-text-primary">
+          Meet the <em className="font-[family-name:var(--font-cormorant)] text-gold">team.</em>
+        </h2>
+      </div>
 
-            {/* Candidate 1 — left aligned */}
-            <motion.div
-              className="absolute inset-0 flex items-center px-8"
-              style={{ opacity: c1Opacity, y: c1Y }}
-            >
-              <div className="mx-auto w-full max-w-7xl">
-                <div className="max-w-xl lg:max-w-2xl">
-                  <span className="font-[family-name:var(--font-figtree)] text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-gold">
-                    {candidates[0].role}
-                  </span>
-                  <h3 className="mt-2 font-[family-name:var(--font-cormorant)] text-[clamp(3rem,6vw,6rem)] font-bold leading-[0.95] tracking-[-0.03em] text-text-primary">
-                    {candidates[0].name}
-                  </h3>
-                  <div className="mt-4 h-px w-12 bg-gold/50" />
-                  <p className="mt-6 max-w-md font-[family-name:var(--font-dm-sans)] text-base leading-relaxed text-text-secondary md:text-lg">
-                    {candidates[0].bio}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Candidate 2 — right aligned */}
-            <motion.div
-              className="absolute inset-0 flex items-center px-8"
-              style={{ opacity: c2Opacity, y: c2Y }}
-            >
-              <div className="mx-auto w-full max-w-7xl">
-                <div className="ml-auto max-w-xl text-right lg:max-w-2xl">
-                  <span className="font-[family-name:var(--font-figtree)] text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-gold">
-                    {candidates[1].role}
-                  </span>
-                  <h3 className="mt-2 font-[family-name:var(--font-cormorant)] text-[clamp(3rem,6vw,6rem)] font-bold leading-[0.95] tracking-[-0.03em] text-text-primary">
-                    {candidates[1].name}
-                  </h3>
-                  <div className="ml-auto mt-4 h-px w-12 bg-gold/50" />
-                  <p className="ml-auto mt-6 max-w-md font-[family-name:var(--font-dm-sans)] text-base leading-relaxed text-text-secondary md:text-lg">
-                    {candidates[1].bio}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Progress dots */}
-            <div className="absolute bottom-12 left-1/2 flex -translate-x-1/2 items-center gap-2">
-              <motion.div className="h-1.5 w-1.5 rounded-full bg-dark" style={{ opacity: dot1 }} />
-              <motion.div className="h-1.5 w-1.5 rounded-full bg-dark" style={{ opacity: dot2 }} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mobile: standard cards */}
-      <section id="candidates-mobile" className="bg-cream py-16 md:hidden">
-        <div className="px-4">
-          <Eyebrow>Your Candidates</Eyebrow>
-          <h2 className="mt-3 font-[family-name:var(--font-cormorant)] text-[clamp(2rem,6vw,3rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-primary">
-            Meet the <em className="text-gold">team</em>.
-          </h2>
-
-          <div className="mt-10 space-y-10">
-            {candidates.map((c) => (
-              <motion.div
-                key={c.initial}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, ease: [0, 0, 0.2, 1] }}
-              >
-                <span className="font-[family-name:var(--font-figtree)] text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-gold">
-                  {c.role}
-                </span>
-                <h3 className="mt-1 font-[family-name:var(--font-cormorant)] text-4xl font-bold tracking-[-0.02em] text-text-primary">
-                  {c.name}
-                </h3>
-                <div className="mt-3 h-px w-10 bg-gold/50" />
-                <p className="mt-4 font-[family-name:var(--font-dm-sans)] text-sm leading-relaxed text-text-secondary">
-                  {c.bio}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
+      {candidates.map((c, i) => (
+        <CandidateBlock key={c.initial} candidate={c} index={i} />
+      ))}
+    </section>
   );
 }

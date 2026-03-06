@@ -1,28 +1,25 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { useRef, type ReactNode } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
-interface MagneticButtonProps {
+interface MagneticWrapperProps {
   children: ReactNode;
-  className?: string;
   strength?: number;
+  className?: string;
 }
 
-export function MagneticButton({
+export function MagneticWrapper({
   children,
-  className,
   strength = 0.3,
-}: MagneticButtonProps) {
+  className,
+}: MagneticWrapperProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const smoothX = useTransform(x, (v) => v);
-  const smoothY = useTransform(y, (v) => v);
+  const springX = useSpring(x, { damping: 20, stiffness: 300 });
+  const springY = useSpring(y, { damping: 20, stiffness: 300 });
 
   function handleMouseMove(e: React.MouseEvent) {
     if (!ref.current) return;
@@ -36,18 +33,15 @@ export function MagneticButton({
   function handleMouseLeave() {
     x.set(0);
     y.set(0);
-    setIsHovered(false);
   }
 
   return (
     <motion.div
       ref={ref}
+      className={className}
+      style={{ x: springX, y: springY }}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      style={{ x: smoothX, y: smoothY }}
-      transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
-      className={cn("inline-block", className)}
     >
       {children}
     </motion.div>

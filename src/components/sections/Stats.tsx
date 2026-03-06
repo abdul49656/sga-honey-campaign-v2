@@ -1,45 +1,35 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
 
-interface OdometerDigitProps {
-  digit: number;
-  delay: number;
-}
-
-function OdometerDigit({ digit, delay }: OdometerDigitProps) {
-  const [active, setActive] = useState(false);
+function AnimatedNumber({ value, delay }: { value: number; delay: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => {
+    if (value >= 1000) {
+      return Math.round(latest).toLocaleString("en-US");
+    }
+    return Math.round(latest).toString();
+  });
 
   useEffect(() => {
     if (isInView) {
-      const timer = setTimeout(() => setActive(true), delay * 1000);
-      return () => clearTimeout(timer);
+      const controls = animate(count, value, {
+        duration: 2,
+        delay,
+        ease: [0.16, 1, 0.3, 1],
+      });
+      return controls.stop;
     }
-  }, [isInView, delay]);
+  }, [isInView, value, delay, count]);
 
-  return (
-    <span ref={ref} className="relative inline-block h-[1em] w-[0.6em] overflow-hidden">
-      <motion.span
-        className="absolute left-0 flex flex-col items-center"
-        initial={{ y: 0 }}
-        animate={active ? { y: `-${digit * 10}%` } : {}}
-        transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
-      >
-        {Array.from({ length: 10 }, (_, i) => (
-          <span key={i} className="block h-[1em] leading-[1em]">
-            {i}
-          </span>
-        ))}
-      </motion.span>
-    </span>
-  );
+  return <motion.span ref={ref}>{rounded}</motion.span>;
 }
 
 interface StatProps {
-  value: string;
+  value: number;
   suffix: string;
   label: string;
   delay: number;
@@ -49,49 +39,54 @@ function StatItem({ value, suffix, label, delay }: StatProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const digits = value.split("").map((ch, i) => {
-    if (ch === ",") return <span key={i}>,</span>;
-    return <OdometerDigit key={i} digit={parseInt(ch)} delay={delay + i * 0.06} />;
-  });
-
   return (
-    <div ref={ref} className="flex flex-col items-center gap-3 py-8 md:py-0">
-      <span className="font-[family-name:var(--font-cormorant)] text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none tracking-[-0.02em] text-white">
-        {digits}
-        {suffix && <span>{suffix}</span>}
+    <motion.div
+      ref={ref}
+      className="flex flex-1 flex-col items-center rounded-3xl border border-white/[0.12] bg-white/[0.06] px-6 py-10 text-center md:px-8 md:py-12"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <span
+        className="text-display-lg text-gold"
+      >
+        <AnimatedNumber value={value} delay={delay} />
+        {suffix}
       </span>
+
       <motion.div
-        className="flex flex-col items-center gap-1.5"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: delay + 0.4, ease: [0, 0, 0.2, 1] }}
+        className="mt-5 flex flex-col items-center gap-3"
+        initial={{ opacity: 0, y: 10 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: delay + 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="h-px w-8 bg-gold/40" />
-        <span className="font-[family-name:var(--font-figtree)] text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-white/50">
+        <span className="text-label text-white/75">
           {label}
         </span>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
 export function Stats() {
   return (
-    <section className="bg-dark py-10 md:py-16">
-      <div className="relative mx-auto max-w-5xl px-4 md:px-8">
-        {/* Gold radial glow */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(253,206,0,0.06)_0%,transparent_70%)]" />
+    <section className="bg-dark py-16 md:py-24">
+      <div className="relative mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
+        {/* Subtle gold radial glow */}
+        <div
+          className="animate-pulse-glow pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(253,206,0,0.15) 0%, transparent 70%)",
+          }}
+          aria-hidden="true"
+        />
 
-        <div className="relative flex flex-col items-stretch divide-y divide-white/5 md:flex-row md:divide-x md:divide-y-0">
-          <div className="flex flex-1 justify-center">
-            <StatItem value="7,200" suffix="+" label="Students Represented" delay={0} />
-          </div>
-          <div className="flex flex-1 justify-center">
-            <StatItem value="4" suffix="" label="Bold Platform Pillars" delay={0.15} />
-          </div>
-          <div className="flex flex-1 justify-center">
-            <StatItem value="1" suffix="" label="Golden Vision" delay={0.3} />
-          </div>
+        <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
+          <StatItem value={7200} suffix="+" label="Students Represented" delay={0} />
+          <StatItem value={4} suffix="" label="Bold Platform Pillars" delay={0.12} />
+          <StatItem value={1} suffix="" label="Golden Vision" delay={0.24} />
         </div>
       </div>
     </section>

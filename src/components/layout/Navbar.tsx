@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -12,158 +11,195 @@ const navLinks = [
   { label: "Get Involved", href: "#involved" },
 ];
 
+function SplitHoverLink({
+  children,
+  href,
+  className,
+}: {
+  children: string;
+  href: string;
+  className?: string;
+}) {
+  const chars = children.split("");
+  return (
+    <a
+      href={href}
+      className={cn(
+        "group relative inline-block overflow-hidden font-[family-name:var(--font-figtree)] text-[0.75rem] font-semibold uppercase tracking-[0.1em]",
+        className
+      )}
+    >
+      <span className="flex">
+        {chars.map((char, i) => (
+          <span
+            key={`top-${i}`}
+            className="inline-block transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:-translate-y-full"
+            style={{ transitionDelay: `${i * 18}ms` }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </span>
+        ))}
+      </span>
+      <span className="absolute left-0 top-0 flex">
+        {chars.map((char, i) => (
+          <span
+            key={`bot-${i}`}
+            className="inline-block translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:translate-y-0"
+            style={{ transitionDelay: `${i * 18}ms` }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </span>
+        ))}
+      </span>
+    </a>
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
   return (
     <>
-      {/* Scroll progress bar */}
-      <motion.div
-        className="fixed left-0 right-0 top-0 z-[11] h-[2px] origin-left bg-gold"
-        style={{ scaleX: scrollYProgress }}
-      />
-
       <nav
         className={cn(
-          "fixed left-0 right-0 top-[2px] z-10 transition-all duration-300 ease-[cubic-bezier(0,0,0.2,1)]",
+          "fixed left-0 right-0 top-0 z-10 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
           scrolled
-            ? "bg-cream/85 shadow-[0_1px_0_rgba(0,0,0,0.04)] backdrop-blur-2xl"
+            ? "bg-cream/90 backdrop-blur-2xl border-b border-dark/[0.10]"
             : "bg-transparent"
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8 lg:py-5">
+        <div className="mx-auto flex max-w-[90rem] items-center justify-between px-6 py-5 md:px-10 lg:px-14 lg:py-6">
+          {/* Logo — text-only, elegant */}
           <a
             href="#"
             className={cn(
-              "font-[family-name:var(--font-cormorant)] text-xl font-bold tracking-[-0.02em] transition-colors duration-300",
+              "font-[family-name:var(--font-cormorant)] text-[1.35rem] font-bold tracking-[-0.03em] transition-colors duration-500",
               scrolled ? "text-text-primary" : "text-white"
             )}
           >
-            D&H <span className="text-gold">✦</span>
+            Daugherty & Honey
           </a>
 
-          <div className="hidden items-center gap-8 md:flex">
+          {/* Desktop nav links */}
+          <div className="hidden items-center gap-10 md:flex">
             {navLinks.map((link) => (
-              <a
+              <SplitHoverLink
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "group relative font-[family-name:var(--font-figtree)] text-[0.8125rem] font-semibold uppercase tracking-[0.06em] transition-colors duration-300 ease-out hover:text-gold",
-                  scrolled ? "text-text-secondary" : "text-white/70"
+                  "transition-colors duration-500",
+                  scrolled ? "text-text-secondary" : "text-white/80"
                 )}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gold transition-transform duration-200 ease-out group-hover:scale-x-100" />
-              </a>
+              </SplitHoverLink>
             ))}
+
+            {/* CTA */}
+            <a
+              href="#involved"
+              className={cn(
+                "group relative inline-flex items-center overflow-hidden font-[family-name:var(--font-figtree)] text-[0.75rem] font-semibold uppercase tracking-[0.08em] transition-all duration-500",
+                scrolled
+                  ? "text-dark"
+                  : "text-white"
+              )}
+            >
+              <span className="relative">
+                Vote for Us
+                <span className={cn(
+                  "absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100",
+                  scrolled ? "bg-dark" : "bg-white"
+                )} />
+              </span>
+            </a>
           </div>
 
-          <a
-            href="#involved"
-            className={cn(
-              "hidden rounded-full px-5 py-2 font-[family-name:var(--font-figtree)] text-[0.8125rem] font-semibold uppercase tracking-[0.04em] transition-all duration-300 ease-out md:inline-block",
-              scrolled
-                ? "bg-dark text-white hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
-                : "bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-            )}
-          >
-            Vote for Us
-          </a>
-
+          {/* Mobile hamburger — minimal */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="flex items-center justify-center md:hidden"
+            className="flex flex-col items-end gap-[5px] md:hidden"
             aria-label="Open menu"
           >
-            <Menu className={cn("h-5 w-5 transition-colors duration-300", scrolled ? "text-text-primary" : "text-white")} />
+            <span className={cn(
+              "block h-px w-6 transition-colors duration-500",
+              scrolled ? "bg-dark" : "bg-white"
+            )} />
+            <span className={cn(
+              "block h-px w-4 transition-colors duration-500",
+              scrolled ? "bg-dark" : "bg-white"
+            )} />
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile fullscreen menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-cream"
+            initial={{ clipPath: "circle(0% at calc(100% - 2rem) 2rem)" }}
+            animate={{ clipPath: "circle(150% at calc(100% - 2rem) 2rem)" }}
+            exit={{ clipPath: "circle(0% at calc(100% - 2rem) 2rem)" }}
+            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 z-50 bg-dark"
           >
-            <div className="flex items-center justify-between px-4 py-4">
-              <span className="font-[family-name:var(--font-cormorant)] text-xl font-bold tracking-[-0.02em]">
-                D&H <span className="text-gold">✦</span>
+            <div className="flex items-center justify-between px-6 py-5">
+              <span className="font-[family-name:var(--font-cormorant)] text-[1.35rem] font-bold tracking-[-0.03em] text-white">
+                D & H
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
+                className="flex items-center gap-2 font-[family-name:var(--font-figtree)] text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-white/50"
               >
-                <X className="h-5 w-5 text-text-primary" />
+                Close
+                <span className="relative flex h-5 w-5 items-center justify-center">
+                  <span className="absolute h-px w-4 rotate-45 bg-white/50" />
+                  <span className="absolute h-px w-4 -rotate-45 bg-white/50" />
+                </span>
               </button>
             </div>
 
-            <div className="flex flex-col gap-6 px-8 pt-12">
+            <div className="flex flex-col gap-2 px-6 pt-16">
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    duration: 0.3,
-                    delay: 0.1 + i * 0.06,
-                    ease: [0, 0, 0.2, 1],
+                    duration: 0.6,
+                    delay: 0.2 + i * 0.08,
+                    ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="font-[family-name:var(--font-cormorant)] text-3xl font-bold text-text-primary"
+                  className="text-display-md text-white py-2"
                 >
                   {link.label}
                 </motion.a>
               ))}
-
-              <motion.a
-                href="#involved"
-                onClick={() => setMobileOpen(false)}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: 0.1 + navLinks.length * 0.06,
-                  ease: [0, 0, 0.2, 1],
-                }}
-                className="mt-4 inline-block w-fit rounded-full bg-dark px-6 py-3 font-[family-name:var(--font-figtree)] text-sm font-semibold uppercase tracking-[0.04em] text-white"
-              >
-                Vote for Us
-              </motion.a>
             </div>
 
-            {/* Tagline at bottom */}
+            {/* Bottom tagline */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="absolute bottom-12 left-8 font-[family-name:var(--font-cormorant)] text-lg italic text-text-muted"
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="absolute bottom-10 left-6 text-label text-white/30"
             >
-              Make It Golden <span className="text-gold">✦</span>
+              Belmont SGA 2026
             </motion.p>
           </motion.div>
         )}

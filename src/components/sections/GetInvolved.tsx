@@ -2,18 +2,17 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Mail, AtSign, Clock } from "lucide-react";
+import { TextReveal } from "@/components/ui/TextReveal";
+import { TextSwapButton } from "@/components/ui/TextSwapButton";
 import { cn } from "@/lib/utils";
 
 const GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbxT5KQsuLEFscY4drvf_FSMxHaOl3Ogs7p4q3f3NTKX9FoPhPY5LfzN19zTrWWy_E93og/exec";
 
 const contactItems = [
-  { icon: Mail, label: "Email", value: "campaign@belmont.edu" },
-  { icon: AtSign, label: "Instagram", value: "@daugherty.honey" },
-  { icon: Clock, label: "Office Hours", value: "Tues & Thurs, 3–5 PM" },
+  { emoji: "📧", label: "Email", value: "campaign@belmont.edu" },
+  { emoji: "📸", label: "Instagram", value: "@daugherty.honey" },
+  { emoji: "🕐", label: "Office Hours", value: "Tues & Thurs, 3\u20135 PM" },
 ];
 
 const interestOptions = [
@@ -42,12 +41,7 @@ export function GetInvolved() {
 
     setStatus("sending");
 
-    const body = new URLSearchParams({
-      name,
-      email,
-      interest,
-      message,
-    });
+    const body = new URLSearchParams({ name, email, interest, message });
 
     try {
       await fetch(GOOGLE_SHEET_URL, { method: "POST", mode: "no-cors", body });
@@ -62,55 +56,59 @@ export function GetInvolved() {
   }
 
   return (
-    <section id="involved" className="bg-gold-ultra py-16 md:py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+    <section
+      id="involved"
+      className="bg-cream-deep"
+      style={{ padding: "var(--section-pad-y) var(--section-pad-x)" }}
+    >
+      <div className="mx-auto max-w-[90rem]">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
           {/* Left — Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, ease: [0, 0, 0.2, 1] }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Eyebrow>Get Involved</Eyebrow>
-            <SectionHeading className="mt-3">
-              Join the <em className="text-gold-hover">Hive.</em>
-            </SectionHeading>
-            <p className="mt-4 max-w-md font-[family-name:var(--font-dm-sans)] text-sm leading-relaxed text-text-secondary">
+            <span className="text-label text-text-muted">Get Involved</span>
+            <h2 className="mt-3 text-display-md text-text-primary">
+              Join the{" "}
+              <em className="font-[family-name:var(--font-cormorant)] text-gold">
+                <TextReveal>Hive.</TextReveal>
+              </em>
+            </h2>
+            <p className="mt-4 max-w-md font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.7] text-text-secondary">
               Whether you want to volunteer, ask a question, or just connect —
               we want to hear from you.
             </p>
 
-            <div className="mt-10 flex flex-col gap-6">
-              {contactItems.map((item, i) => {
-                const Icon = item.icon;
-                return (
+            <div className="mt-12 flex flex-col gap-8">
+              {contactItems.map((item, i) => (
                   <motion.div
                     key={item.label}
-                    className="group flex items-center gap-4"
+                    className="group flex items-center gap-5"
                     initial={{ opacity: 0, x: -16 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{
-                      duration: 0.4,
-                      delay: 0.1 + i * 0.07,
-                      ease: [0, 0, 0.2, 1],
+                      duration: 0.6,
+                      delay: 0.1 + i * 0.08,
+                      ease: [0.16, 1, 0.3, 1],
                     }}
                   >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold/15 transition-colors duration-200 group-hover:bg-gold/25">
-                      <Icon className="h-4 w-4 text-gold-hover" strokeWidth={1.5} />
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-dark/15 bg-white shadow-sm transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold/5">
+                      <span className="text-lg">{item.emoji}</span>
                     </div>
                     <div>
-                      <span className="block font-[family-name:var(--font-figtree)] text-[0.625rem] font-bold uppercase tracking-[0.12em] text-text-muted">
+                      <span className="block text-label text-[0.6rem] text-text-muted">
                         {item.label}
                       </span>
-                      <span className="font-[family-name:var(--font-dm-sans)] text-sm text-text-secondary">
+                      <span className="font-[family-name:var(--font-dm-sans)] text-[0.9375rem] text-text-secondary">
                         {item.value}
                       </span>
                     </div>
                   </motion.div>
-                );
-              })}
+              ))}
             </div>
           </motion.div>
 
@@ -119,128 +117,114 @@ export function GetInvolved() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0, 0, 0.2, 1] }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
             <form
               ref={formRef}
               onSubmit={handleSubmit}
-              className="rounded-2xl border border-gold/10 bg-white/70 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)] backdrop-blur-xl md:p-8"
+              className="space-y-8 rounded-3xl bg-white p-6 md:p-10"
+              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
             >
-              <div className="space-y-5">
-                {/* Name */}
-                <div className="group relative">
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    placeholder="Full name"
-                    className="peer h-11 w-full rounded-lg border border-dark/8 bg-cream/30 px-3.5 font-[family-name:var(--font-dm-sans)] text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted focus:border-gold focus:bg-white focus:shadow-[0_2px_20px_rgba(253,206,0,0.08)]"
-                  />
-                </div>
+              {/* Name */}
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="Full name"
+                className="input-underline"
+              />
 
-                {/* Email */}
-                <div className="group relative">
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    placeholder="you@belmont.edu"
-                    className="peer h-11 w-full rounded-lg border border-dark/8 bg-cream/30 px-3.5 font-[family-name:var(--font-dm-sans)] text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted focus:border-gold focus:bg-white focus:shadow-[0_2px_20px_rgba(253,206,0,0.08)]"
-                  />
-                </div>
+              {/* Email */}
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="you@belmont.edu"
+                className="input-underline"
+              />
 
-                {/* Interest — pill toggle */}
-                <div>
-                  <span className="mb-2 block font-[family-name:var(--font-figtree)] text-xs font-semibold uppercase tracking-[0.08em] text-text-secondary">
-                    I want to...
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {interestOptions.map((opt) => (
-                      <button
-                        key={opt}
-                        type="button"
-                        onClick={() => setInterest(opt)}
-                        className={cn(
-                          "relative rounded-full px-4 py-2 font-[family-name:var(--font-figtree)] text-xs font-semibold transition-all duration-200",
-                          interest === opt
-                            ? "bg-gold text-dark"
-                            : "bg-dark/5 text-text-secondary hover:bg-dark/10"
-                        )}
-                      >
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <textarea
-                    name="message"
-                    rows={3}
-                    placeholder="Tell us what's on your mind... (optional)"
-                    className="w-full resize-none rounded-lg border border-dark/8 bg-cream/30 px-3.5 py-2.5 font-[family-name:var(--font-dm-sans)] text-sm text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted focus:border-gold focus:bg-white focus:shadow-[0_2px_20px_rgba(253,206,0,0.08)]"
-                  />
+              {/* Interest — text toggles */}
+              <div>
+                <span className="text-label text-[0.6rem] text-text-muted">
+                  I want to...
+                </span>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {interestOptions.map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setInterest(opt)}
+                      className={cn(
+                        "rounded-full border px-4 py-2 font-[family-name:var(--font-figtree)] text-[0.75rem] font-semibold transition-all duration-300",
+                        interest === opt
+                          ? "border-dark bg-dark text-white"
+                          : "border-dark/10 text-text-secondary hover:border-dark/25"
+                      )}
+                    >
+                      {opt}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Submit button */}
-              <motion.button
-                type="submit"
-                disabled={status === "sending" || status === "sent"}
-                className="mt-6 w-full overflow-hidden rounded-xl bg-dark py-3.5 font-[family-name:var(--font-figtree)] text-sm font-bold uppercase tracking-[0.04em] text-white transition-all duration-200 ease-out hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] disabled:opacity-50"
-                whileHover={status === "idle" ? { scale: 1.01 } : {}}
-                whileTap={status === "idle" ? { scale: 0.98 } : {}}
-              >
+              {/* Message */}
+              <textarea
+                name="message"
+                rows={3}
+                placeholder="Tell us what's on your mind... (optional)"
+                className="input-underline resize-none"
+              />
+
+              {/* Submit */}
+              <div className="pt-2">
                 <AnimatePresence mode="wait">
                   {status === "idle" && (
-                    <motion.span
+                    <motion.div
                       key="idle"
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.15 }}
                     >
-                      Send It
-                    </motion.span>
+                      <TextSwapButton type="submit" variant="dark">
+                        Send It
+                      </TextSwapButton>
+                    </motion.div>
                   )}
                   {status === "sending" && (
-                    <motion.span
+                    <motion.p
                       key="sending"
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.15 }}
+                      className="text-label text-text-muted"
                     >
                       Sending...
-                    </motion.span>
+                    </motion.p>
                   )}
                   {status === "sent" && (
-                    <motion.span
+                    <motion.p
                       key="sent"
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="text-emerald-400"
+                      className="text-label text-emerald-600"
                     >
                       Sent!
-                    </motion.span>
+                    </motion.p>
                   )}
                   {status === "error" && (
-                    <motion.span
+                    <motion.p
                       key="error"
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="text-red-400"
+                      className="text-label text-red-500"
                     >
                       Something went wrong
-                    </motion.span>
+                    </motion.p>
                   )}
                 </AnimatePresence>
-              </motion.button>
+              </div>
             </form>
           </motion.div>
         </div>

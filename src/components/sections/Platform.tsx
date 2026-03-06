@@ -1,34 +1,33 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Heart, Users, BookOpen, Leaf } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { TextReveal } from "@/components/ui/TextReveal";
 
 const pillars = [
   {
-    icon: Heart,
+    emoji: "💛",
     number: "01",
     title: "Student Wellness & Mental Health",
     description:
       "Expanding counseling access, creating quiet study sanctuaries, and launching peer support programs that meet students where they are.",
   },
   {
-    icon: Users,
+    emoji: "🤝",
     number: "02",
     title: "Campus Unity & Inclusion",
     description:
       "Building bridges across organizations, amplifying underrepresented voices, and creating spaces where every Bruin belongs.",
   },
   {
-    icon: BookOpen,
+    emoji: "📚",
     number: "03",
     title: "Academic Resources & Advocacy",
     description:
       "Fighting for affordable materials, extended library hours, and mentorship programs that connect students with real-world opportunities.",
   },
   {
-    icon: Leaf,
+    emoji: "🌿",
     number: "04",
     title: "Sustainability & Campus Life",
     description:
@@ -36,139 +35,98 @@ const pillars = [
   },
 ];
 
-function PillarCard({ pillar }: { pillar: (typeof pillars)[0] }) {
+function PillarCard({
+  pillar,
+  index,
+}: {
+  pillar: (typeof pillars)[0];
+  index: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const Icon = pillar.icon;
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className="flex h-full w-[85vw] flex-shrink-0 flex-col justify-center px-8 sm:w-[70vw] md:w-[50vw] md:px-12 lg:w-[40vw]"
+      className="group relative overflow-hidden rounded-3xl bg-white p-8 transition-shadow duration-500 hover:shadow-xl md:p-10"
+      style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
-      <motion.span
-        className="pointer-events-none select-none font-[family-name:var(--font-cormorant)] text-[clamp(6rem,12vw,10rem)] font-bold leading-none"
-        style={{
-          WebkitTextStroke: "1px rgba(253,206,0,0.25)",
-          WebkitTextFillColor: "transparent",
-        }}
-        initial={{ opacity: 0, x: 40 }}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.5, delay: 0.1, ease: [0, 0, 0.2, 1] }}
-      >
-        {pillar.number}
-      </motion.span>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5, delay: 0.2, ease: [0, 0, 0.2, 1] }}
-        className="-mt-6"
-      >
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10">
-          <Icon className="h-5 w-5 text-gold-hover" strokeWidth={1.5} />
+      {/* Content */}
+      <div className="relative flex flex-col gap-5">
+        {/* Emoji + Number row */}
+        <div className="flex items-center justify-between">
+          <motion.span
+            className="animate-emoji-bounce text-4xl md:text-5xl"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {pillar.emoji}
+          </motion.span>
+          <motion.span
+            className="font-[family-name:var(--font-cormorant)] text-[2rem] font-bold leading-none text-dark/15 md:text-[2.5rem]"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {pillar.number}
+          </motion.span>
         </div>
 
-        <h3 className="mt-5 max-w-sm font-[family-name:var(--font-cormorant)] text-[clamp(1.5rem,3vw,2rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-primary">
-          {pillar.title}
+        {/* Gold divider */}
+        <motion.div
+          className="h-px w-full bg-dark/[0.08]"
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          style={{ originX: 0 }}
+        />
+
+        {/* Title */}
+        <h3 className="text-display-md text-text-primary">
+          <TextReveal>{pillar.title}</TextReveal>
         </h3>
 
-        <p className="mt-4 max-w-sm font-[family-name:var(--font-dm-sans)] text-sm leading-relaxed text-text-secondary md:text-base">
+        {/* Description */}
+        <motion.p
+          className="max-w-md font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.8] text-text-secondary"
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.3 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
           {pillar.description}
-        </p>
-      </motion.div>
-
-      <motion.div
-        className="mt-8 h-px w-full bg-dark/5"
-        initial={{ scaleX: 0 }}
-        animate={isInView ? { scaleX: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.3, ease: [0, 0, 0.2, 1] }}
-        style={{ originX: 0 }}
-      />
-    </div>
+        </motion.p>
+      </div>
+    </motion.div>
   );
 }
 
 export function Platform() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
-
   return (
-    <section id="platform" className="bg-white">
-      {/* Desktop: horizontal scroll */}
-      <div className="hidden md:block">
-        <section ref={sectionRef} className="relative h-[300vh]">
-          <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-            <div className="px-8 pb-8 lg:px-12">
-              <Eyebrow>Our Platform</Eyebrow>
-              <h2 className="mt-3 font-[family-name:var(--font-cormorant)] text-[clamp(2rem,4vw+0.5rem,3.25rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-primary">
-                Four pillars for a <em className="text-gold">brighter</em>{" "}
-                Belmont.
-              </h2>
-            </div>
-
-            <motion.div className="flex" style={{ x }}>
-              {pillars.map((pillar) => (
-                <PillarCard key={pillar.number} pillar={pillar} />
-              ))}
-            </motion.div>
-          </div>
-        </section>
+    <section id="platform" className="overflow-hidden bg-cream-deep">
+      {/* Section heading */}
+      <div
+        className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14"
+        style={{ paddingTop: "var(--section-pad-y)" }}
+      >
+        <span className="text-label text-text-muted">Our Platform</span>
+        <h2 className="mt-3 text-display-md text-text-primary">
+          Four pillars for a{" "}
+          <em className="font-[family-name:var(--font-cormorant)] text-gold">brighter</em>{" "}
+          Belmont.
+        </h2>
       </div>
 
-      {/* Mobile: vertical stack */}
-      <div className="py-16 md:hidden">
-        <div className="px-4 pb-8">
-          <Eyebrow>Our Platform</Eyebrow>
-          <h2 className="mt-3 font-[family-name:var(--font-cormorant)] text-[clamp(2rem,4vw+0.5rem,3.25rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-primary">
-            Four pillars for a <em className="text-gold">brighter</em> Belmont.
-          </h2>
-        </div>
-
-        <div className="space-y-12 px-4">
-          {pillars.map((pillar, i) => {
-            const Icon = pillar.icon;
-            return (
-              <motion.div
-                key={pillar.number}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.07,
-                  ease: [0, 0, 0.2, 1],
-                }}
-              >
-                <span
-                  className="font-[family-name:var(--font-cormorant)] text-5xl font-bold leading-none"
-                  style={{
-                    WebkitTextStroke: "1px rgba(253,206,0,0.25)",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {pillar.number}
-                </span>
-
-                <div className="-mt-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10">
-                    <Icon className="h-5 w-5 text-gold-hover" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="mt-4 font-[family-name:var(--font-cormorant)] text-xl font-bold tracking-[-0.01em] text-text-primary">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-3 font-[family-name:var(--font-dm-sans)] text-sm leading-relaxed text-text-secondary">
-                    {pillar.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+      {/* Card grid */}
+      <div className="mx-auto mt-12 max-w-[90rem] px-6 pb-16 md:mt-16 md:px-10 md:pb-24 lg:px-14">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+          {pillars.map((pillar, i) => (
+            <PillarCard key={pillar.number} pillar={pillar} index={i} />
+          ))}
         </div>
       </div>
     </section>

@@ -1,9 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { MagneticButton } from "@/components/ui/MagneticButton";
-import { ArrowUp } from "lucide-react";
+import { MagneticWrapper } from "@/components/ui/MagneticWrapper";
 
 const footerLinks = {
   Navigate: [
@@ -31,54 +28,45 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative bg-cream-deep">
-      {/* Large watermark tagline */}
-      <div
-        className="pointer-events-none absolute left-0 right-0 top-0 flex items-start justify-center overflow-hidden pt-12"
-        aria-hidden="true"
-      >
-        <span className="select-none whitespace-nowrap font-[family-name:var(--font-cormorant)] text-[clamp(4rem,12vw,10rem)] font-bold italic leading-none text-dark/[0.03]">
-          Make It Golden
-        </span>
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-20">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="border-t border-dark/[0.06] bg-cream">
+      <div className="mx-auto max-w-[90rem] px-6 py-16 md:px-10 md:py-20 lg:px-14">
+        {/* Main grid */}
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          {/* Brand */}
           <div>
             <span className="font-[family-name:var(--font-cormorant)] text-xl font-bold tracking-[-0.02em]">
               Daugherty & Honey
             </span>
-            <p className="mt-3 max-w-[240px] font-[family-name:var(--font-dm-sans)] text-sm leading-relaxed text-text-secondary">
+            <p className="mt-4 max-w-[260px] font-[family-name:var(--font-dm-sans)] text-[0.875rem] leading-[1.7] text-text-secondary">
               A golden vision for Belmont. Student wellness, campus unity,
               academic advocacy, and sustainability.
             </p>
-            <div className="mt-5 flex gap-3">
+            <div className="mt-6 flex gap-3">
               {["IG", "X", "TK"].map((platform) => (
-                <MagneticButton key={platform}>
+                <MagneticWrapper key={platform} strength={0.4}>
                   <a
                     href="#"
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-dark/5 font-[family-name:var(--font-figtree)] text-xs font-semibold text-text-secondary transition-colors duration-200 hover:bg-gold hover:text-dark"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-dark/8 font-[family-name:var(--font-figtree)] text-[0.625rem] font-semibold text-text-secondary transition-all duration-300 hover:border-dark/20 hover:text-text-primary"
                   >
                     {platform}
                   </a>
-                </MagneticButton>
+                </MagneticWrapper>
               ))}
             </div>
           </div>
 
+          {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
-              <Eyebrow className="text-text-muted">{title}</Eyebrow>
-              <ul className="mt-4 flex flex-col gap-2.5">
+              <span className="text-label text-text-muted">{title}</span>
+              <ul className="mt-5 flex flex-col gap-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="group inline-flex items-center font-[family-name:var(--font-dm-sans)] text-sm text-text-secondary transition-all duration-200 hover:text-text-primary"
+                      className="group inline-flex items-center font-[family-name:var(--font-dm-sans)] text-[0.875rem] text-text-secondary transition-colors duration-300 hover:text-text-primary"
                     >
-                      <span className="inline-block w-0 overflow-hidden text-gold transition-all duration-200 group-hover:mr-2 group-hover:w-3">
-                        —
-                      </span>
+                      <span className="inline-block h-px w-0 bg-dark transition-all duration-300 group-hover:mr-2.5 group-hover:w-4" />
                       {link.label}
                     </a>
                   </li>
@@ -88,24 +76,26 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-dark/5 pt-8 sm:flex-row">
-          <p className="font-[family-name:var(--font-dm-sans)] text-xs text-text-muted">
+        {/* Bottom bar */}
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-dark/[0.06] pt-8 sm:flex-row">
+          <p className="font-[family-name:var(--font-dm-sans)] text-[0.75rem] text-text-muted">
             &copy; 2026 Daugherty & Honey Campaign. Belmont University.
           </p>
 
-          <div className="flex items-center gap-4">
-            <p className="font-[family-name:var(--font-cormorant)] text-sm font-semibold italic text-text-muted">
-              Make It Golden <span className="text-gold">✦</span>
+          <div className="flex items-center gap-6">
+            <p className="font-[family-name:var(--font-cormorant)] text-[0.875rem] font-semibold italic text-text-muted">
+              Make It Golden
             </p>
 
-            {/* Back to top */}
-            <button
-              onClick={scrollToTop}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 text-gold-hover transition-colors duration-200 hover:bg-gold hover:text-dark"
-              aria-label="Back to top"
-            >
-              <ArrowUp className="h-4 w-4" strokeWidth={1.5} />
-            </button>
+            <MagneticWrapper strength={0.5}>
+              <button
+                onClick={scrollToTop}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-dark/8 text-text-muted transition-all duration-300 hover:border-dark/20 hover:text-text-primary"
+                aria-label="Back to top"
+              >
+                <span className="text-sm">⬆️</span>
+              </button>
+            </MagneticWrapper>
           </div>
         </div>
       </div>
