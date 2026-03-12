@@ -32,10 +32,10 @@ export function Hero() {
       ref={sectionRef}
       className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0d0b08]"
     >
-      {/* Video background — desktop only */}
+      {/* Video background */}
       <motion.div
-        className="absolute inset-0 hidden md:block"
-        style={{ scale: videoScale, opacity: videoOpacity }}
+        className="absolute inset-0"
+        style={{ scale: isMobile ? 1 : videoScale, opacity: isMobile ? 1 : videoOpacity }}
       >
         <video
           autoPlay
@@ -70,7 +70,7 @@ export function Hero() {
         </motion.span>
 
         {/* Massive headline */}
-        <h1 className="mt-5 text-display-hero text-white md:mt-8">
+        <h1 className="mt-5 text-display-hero text-white md:mt-8" style={{ lineHeight: 0.88 }}>
           <TextReveal delay={0.3} stagger={0.05}>
             Join the
           </TextReveal>

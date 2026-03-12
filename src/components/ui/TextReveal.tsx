@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ElementType } from "react";
+import { useEffect, useRef, useState, type ElementType } from "react";
 import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +25,35 @@ export function TextReveal({
 }: TextRevealProps) {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once, margin: "-80px" });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Mobile: single motion element — avoids N compositor layers per text block
+  if (isMobile) {
+    return (
+      <Tag
+        ref={ref}
+        className={cn("inline-block", className)}
+        aria-label={children}
+      >
+        <motion.span
+          className="inline-block"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {children}
+        </motion.span>
+      </Tag>
+    );
+  }
 
   const units =
     splitBy === "chars" ? children.split("") : children.split(" ");
