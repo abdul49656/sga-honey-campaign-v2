@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { ParallaxLayer } from "@/components/ui/ParallaxLayer";
@@ -28,6 +28,16 @@ function CandidateBlock({
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -40,11 +50,11 @@ function CandidateBlock({
       ref={ref}
       className="relative overflow-hidden py-10 md:py-16 lg:py-20"
     >
-      {/* Watermark initial — clipped to prevent overflow */}
+      {/* Watermark initial — clipped to prevent overflow, parallax on desktop only */}
       <motion.span
         className="pointer-events-none absolute top-1/2 -translate-y-1/2 select-none font-[family-name:var(--font-cormorant)] text-[clamp(14rem,30vw,25rem)] font-bold leading-none text-dark/[0.05]"
         style={{
-          y: watermarkY,
+          y: isMobile ? 0 : watermarkY,
           right: isReversed ? "auto" : "5%",
           left: isReversed ? "5%" : "auto",
         }}

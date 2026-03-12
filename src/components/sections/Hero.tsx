@@ -1,12 +1,22 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { TextSwapButton } from "@/components/ui/TextSwapButton";
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
@@ -20,11 +30,11 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0d0b08]"
     >
-      {/* Video background */}
+      {/* Video background — desktop only */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden md:block"
         style={{ scale: videoScale, opacity: videoOpacity }}
       >
         <video
@@ -41,26 +51,26 @@ export function Hero() {
       {/* Overlay */}
       <motion.div
         className="absolute inset-0 bg-black"
-        style={{ opacity: overlayOpacity }}
+        style={{ opacity: isMobile ? 0.65 : overlayOpacity }}
       />
 
       {/* Content */}
       <motion.div
-        className="relative z-[1] mx-auto w-full max-w-[90rem] px-6 py-32 md:px-10 lg:px-14"
-        style={{ y: contentY }}
+        className="relative z-[1] mx-auto w-full max-w-[90rem] px-6 py-20 md:px-10 md:py-32 lg:px-14"
+        style={{ y: isMobile ? 0 : contentY }}
       >
         {/* Eyebrow */}
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-label text-white/55"
         >
           Belmont University &mdash; SGA 2026
         </motion.span>
 
         {/* Massive headline */}
-        <h1 className="mt-8 text-display-hero text-white">
+        <h1 className="mt-5 text-display-hero text-white md:mt-8">
           <TextReveal delay={0.3} stagger={0.05}>
             Join the
           </TextReveal>
@@ -73,7 +83,7 @@ export function Hero() {
         </h1>
 
         {/* Subline + CTA */}
-        <div className="mt-10 flex flex-col items-start gap-8 md:mt-14">
+        <div className="mt-7 flex flex-col items-start gap-6 md:mt-14">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

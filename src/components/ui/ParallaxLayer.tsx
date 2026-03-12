@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 interface ParallaxLayerProps {
@@ -14,7 +14,19 @@ export function ParallaxLayer({
   speed = 0.5,
   className,
 }: ParallaxLayerProps) {
+  const [isMobile, setIsMobile] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Always attach ref so useScroll always has a valid target after mount.
+  // useScroll and useTransform must be called unconditionally (rules of hooks).
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -24,7 +36,11 @@ export function ParallaxLayer({
 
   return (
     <div ref={ref} className={className}>
-      <motion.div style={{ y }}>{children}</motion.div>
+      {isMobile ? (
+        children
+      ) : (
+        <motion.div style={{ y }}>{children}</motion.div>
+      )}
     </div>
   );
 }

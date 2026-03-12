@@ -43,14 +43,14 @@ export function TextReveal({
         >
           <motion.span
             className="inline-block will-change-transform"
-            initial={{ y: "105%", rotateX: -80, opacity: 0 }}
+            initial={{ y: "100%", opacity: 0 }}
             animate={
               isInView
-                ? { y: "0%", rotateX: 0, opacity: 1 }
-                : { y: "105%", rotateX: -80, opacity: 0 }
+                ? { y: "0%", opacity: 1 }
+                : { y: "100%", opacity: 0 }
             }
             transition={{
-              duration: 0.8,
+              duration: 0.75,
               delay: delay + i * stagger,
               ease: [0.16, 1, 0.3, 1],
             }}

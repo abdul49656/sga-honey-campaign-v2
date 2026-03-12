@@ -124,7 +124,7 @@ body {
 
 .text-display-hero {
   font-family: var(--font-display), serif;
-  font-size: clamp(3rem, 10vw, 11rem);
+  font-size: clamp(4rem, 10vw, 11rem);
   font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.03em;
