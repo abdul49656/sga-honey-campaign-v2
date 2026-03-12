@@ -73,7 +73,7 @@ export function Hero() {
         </h1>
 
         {/* Subline + CTA */}
-        <div className="mt-10 flex flex-col gap-8 md:mt-14">
+        <div className="mt-10 flex flex-col items-start gap-8 md:mt-14">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
