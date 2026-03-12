@@ -62,12 +62,12 @@ export function Hero() {
         {/* Massive headline */}
         <h1 className="mt-8 text-display-hero text-white">
           <TextReveal delay={0.3} stagger={0.05}>
-            Make It
+            Join the
           </TextReveal>
           <br />
           <span className="text-gold">
             <TextReveal delay={0.6} stagger={0.04} splitBy="chars">
-              Golden.
+              Hive.
             </TextReveal>
           </span>
         </h1>
