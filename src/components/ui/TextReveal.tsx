@@ -35,7 +35,7 @@ export function TextReveal({
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // Mobile: single motion element — avoids N compositor layers per text block
+  // Mobile: single motion element — keeps correct inline width for large hero text
   if (isMobile) {
     return (
       <Tag

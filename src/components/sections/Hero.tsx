@@ -70,17 +70,39 @@ export function Hero() {
         </motion.span>
 
         {/* Massive headline */}
-        <h1 className="mt-5 text-display-hero text-white md:mt-8" style={{ lineHeight: 0.88 }}>
-          <TextReveal delay={0.3} stagger={0.05}>
-            Join the
-          </TextReveal>
-          <br />
-          <span className="text-gold">
-            <TextReveal delay={0.6} stagger={0.04} splitBy="chars">
+        {isMobile ? (
+          <div className="mt-5 font-[family-name:var(--font-cormorant)] font-bold text-white"
+               style={{ fontSize: "28vw", lineHeight: 0.88, letterSpacing: "-0.03em" }}>
+            <motion.div
+              className="whitespace-nowrap"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Join the
+            </motion.div>
+            <motion.div
+              className="text-gold"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
               Hive.
+            </motion.div>
+          </div>
+        ) : (
+          <h1 className="mt-8 text-display-hero text-white" style={{ lineHeight: 0.88 }}>
+            <TextReveal delay={0.3} stagger={0.05}>
+              Join the
             </TextReveal>
-          </span>
-        </h1>
+            <br />
+            <span className="text-gold">
+              <TextReveal delay={0.6} stagger={0.04} splitBy="chars">
+                Hive.
+              </TextReveal>
+            </span>
+          </h1>
+        )}
 
         {/* Subline + CTA */}
         <div className="mt-7 flex flex-col items-start gap-6 md:mt-14">
