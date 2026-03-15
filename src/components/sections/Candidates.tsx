@@ -48,10 +48,10 @@ function CandidateBlock({
           {/* Headshot — mobile */}
           <motion.div
             className="flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
               className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white"
@@ -70,10 +70,10 @@ function CandidateBlock({
           <motion.div
             className="flex flex-col items-center text-center rounded-3xl bg-white p-8"
             style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="text-label text-gold">{candidate.role}</span>
             <h3 className="mt-3 font-[family-name:var(--font-cormorant)] text-display-lg text-text-primary">
@@ -159,12 +159,18 @@ function CandidateBlock({
 export function Candidates() {
   return (
     <section id="candidates" className="overflow-hidden bg-cream-deep">
-      <div className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14">
+      <motion.div
+        className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+      >
         <span className="text-label text-text-muted">Your Candidates</span>
         <h2 className="mt-3 text-display-md text-text-primary">
           Meet the <em className="font-[family-name:var(--font-cormorant)] text-gold">team.</em>
         </h2>
-      </div>
+      </motion.div>
 
       {candidates.map((c, i) => (
         <CandidateBlock key={c.initial} candidate={c} index={i} />

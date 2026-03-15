@@ -91,10 +91,10 @@ function GalleryItemMobile({ img, index }: { img: (typeof images)[0]; index: num
   return (
     <motion.div
       className={`group relative min-h-[220px] overflow-hidden rounded-2xl ${img.width}`}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45, delay: index * 0.04, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -126,10 +126,10 @@ export function Campus() {
     >
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
         <motion.div
-          initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: isMobile ? 0.4 : 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="mb-12 max-w-xl md:mb-16"
         >
           <span className="text-label text-text-muted">Campus Life</span>

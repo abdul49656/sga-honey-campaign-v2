@@ -2,7 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 // Directly writes textContent via requestAnimationFrame — no React re-renders,
 // no Framer Motion motion value chain. Much smoother on mobile.
@@ -66,22 +65,20 @@ interface StatProps {
 }
 
 function StatItem({ value, suffix, label, delay }: StatProps) {
-  const isMobile = useIsMobile();
-
   return (
     <motion.div
       className="flex flex-1 flex-col items-center rounded-3xl border border-white/[0.12] bg-white/[0.06] px-6 py-10 text-center md:px-8 md:py-12"
-      initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{
-        duration: isMobile ? 0.4 : 0.7,
-        delay: isMobile ? 0 : delay,
+        duration: 0.65,
+        delay,
         ease: [0.16, 1, 0.3, 1],
       }}
     >
       <span className="text-display-lg text-gold">
-        <AnimatedNumber value={value} delay={isMobile ? 0 : delay} />
+        <AnimatedNumber value={value} delay={delay} />
         {suffix}
       </span>
 

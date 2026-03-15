@@ -32,6 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" as="video" href="/hero-video.mp4" type="video/mp4" />
+      </head>
       <body
         className={`${cormorant.variable} ${montserrat.variable} antialiased`}
       >

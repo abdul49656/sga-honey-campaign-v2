@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 const photos = [
   { src: "/campaign/duo-balcony.jpg", alt: "Daugherty & Honey on the Belmont balcony" },
@@ -19,23 +18,15 @@ function GalleryPhoto({
   photo: (typeof photos)[number];
   index: number;
 }) {
-  const isMobile = useIsMobile();
-
   return (
     <motion.div
       className="group mb-3 break-inside-avoid overflow-hidden rounded-2xl lg:mb-4 lg:rounded-3xl"
-      initial={{
-        opacity: 0,
-        y: isMobile ? 16 : 30,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-      }}
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{
-        duration: isMobile ? 0.4 : 0.8,
-        delay: isMobile ? 0 : index * 0.08,
+        duration: 0.65,
+        delay: index * 0.07,
         ease: [0.16, 1, 0.3, 1],
       }}
     >
@@ -58,10 +49,10 @@ export function PhotoGallery() {
     <section className="overflow-hidden bg-cream-deep pb-0">
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="mb-10 md:mb-14"
         >
           <span className="text-label text-text-muted">The Campaign</span>

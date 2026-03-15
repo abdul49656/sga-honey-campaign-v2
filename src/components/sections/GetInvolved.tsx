@@ -66,10 +66,10 @@ export function GetInvolved() {
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
           {/* Left — Info */}
           <motion.div
-            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: isMobile ? 0 : -32, y: isMobile ? 32 : 0 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: isMobile ? 0.35 : 0.8, ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="text-label text-text-muted">Get Involved</span>
             <h2 className="mt-3 text-display-md text-text-primary">
@@ -88,13 +88,13 @@ export function GetInvolved() {
                   <motion.div
                     key={item.label}
                     className="group flex items-center gap-5"
-                    initial={{ opacity: 0, x: isMobile ? 0 : -16 }}
+                    initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{
-                      duration: isMobile ? 0.35 : 0.6,
-                      delay: isMobile ? 0 : 0.1 + i * 0.08,
-                      ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1],
+                      duration: 0.55,
+                      delay: 0.1 + i * 0.08,
+                      ease: [0.16, 1, 0.3, 1],
                     }}
                   >
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-dark/15 bg-white shadow-sm transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold/5">
@@ -115,10 +115,10 @@ export function GetInvolved() {
 
           {/* Right — Form */}
           <motion.div
-            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: isMobile ? 0 : 32, y: isMobile ? 32 : 0 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: isMobile ? 0.35 : 0.8, delay: isMobile ? 0 : 0.1, ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
             <form
               ref={formRef}

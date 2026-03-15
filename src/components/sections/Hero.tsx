@@ -1,21 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { TextSwapButton } from "@/components/ui/TextSwapButton";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -32,7 +25,7 @@ export function Hero() {
       ref={sectionRef}
       className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0d0b08]"
     >
-      {/* Video background */}
+      {/* Video background — poster shows instantly while video loads */}
       <motion.div
         className="absolute inset-0"
         style={{ scale: isMobile ? 1 : videoScale, opacity: isMobile ? 1 : videoOpacity }}
@@ -42,6 +35,8 @@ export function Hero() {
           muted
           loop
           playsInline
+          preload="auto"
+          poster="/campaign/duo-walking-fountain.jpg"
           className="h-full w-full object-cover"
         >
           <source src="/hero-video.mp4" type="video/mp4" />
@@ -69,22 +64,24 @@ export function Hero() {
           Belmont University | SGA 2026
         </motion.span>
 
-        {/* Massive headline */}
+        {/* Headline */}
         {isMobile ? (
-          <div className="text-display-hero mt-5 text-white"
-               style={{ fontSize: "clamp(3.5rem, 18vw, 8rem)", lineHeight: 0.88 }}>
+          <div
+            className="text-display-hero mt-5 text-white"
+            style={{ fontSize: "clamp(3.5rem, 18vw, 8rem)", lineHeight: 0.88 }}
+          >
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.65, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
               Join the
             </motion.div>
             <motion.div
               className="text-gold"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.65, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               Hive.
             </motion.div>
@@ -108,7 +105,7 @@ export function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: isMobile ? 0.7 : 1, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-sm font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-white/70"
           >
             Daugherty & Honey for SGA President & Vice President.
@@ -118,7 +115,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.15, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: isMobile ? 0.85 : 1.15, ease: [0.16, 1, 0.3, 1] }}
           >
             <TextSwapButton href="#involved" variant="filled">
               Join the Hive
@@ -131,7 +128,7 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.5 }}
+        transition={{ duration: 0.8, delay: isMobile ? 1.1 : 1.5 }}
         className="absolute bottom-8 left-1/2 z-[1] flex -translate-x-1/2 flex-col items-center gap-3"
       >
         <span className="font-[family-name:var(--font-montserrat)] text-[0.5rem] font-semibold uppercase tracking-[0.18em] text-white/45">

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 const pillars = [
   {
@@ -60,20 +59,19 @@ function PillarCard({
   pillar: (typeof pillars)[0];
   index: number;
 }) {
-  const isMobile = useIsMobile();
   const [expanded, setExpanded] = useState(false);
 
   return (
     <motion.div
       className="group relative overflow-hidden rounded-3xl bg-white p-8 transition-shadow duration-500 hover:shadow-xl md:p-10"
       style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-      initial={{ opacity: 0, y: isMobile ? 0 : 24 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{
-        duration: isMobile ? 0.35 : 0.6,
-        delay: isMobile ? 0 : index * 0.07,
-        ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1],
+        duration: 0.65,
+        delay: index * 0.07,
+        ease: [0.16, 1, 0.3, 1],
       }}
     >
       <div className="relative flex flex-col gap-5">
@@ -135,9 +133,13 @@ function PillarCard({
 export function Platform() {
   return (
     <section id="platform" className="overflow-hidden bg-cream-deep">
-      <div
+      <motion.div
         className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14"
         style={{ paddingTop: "var(--section-pad-y)" }}
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
       >
         <span className="text-label text-text-muted">Our Platform</span>
         <h2 className="mt-3 text-display-md text-text-primary">
@@ -145,7 +147,7 @@ export function Platform() {
           <em className="font-[family-name:var(--font-cormorant)] text-gold">brighter</em>{" "}
           Belmont.
         </h2>
-      </div>
+      </motion.div>
 
       <div className="mx-auto mt-12 max-w-[90rem] px-6 pb-16 md:mt-16 md:px-10 md:pb-24 lg:px-14">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
