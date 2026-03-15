@@ -138,9 +138,9 @@ export function Platform() {
       <motion.div
         className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14"
         style={{ paddingTop: "var(--section-pad-y)" }}
-        initial={{ opacity: 0, y: 32 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
+        initial={{ opacity: 0, x: -24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
       >
         <span className="text-label text-text-muted">Our Platform</span>

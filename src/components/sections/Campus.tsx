@@ -126,9 +126,9 @@ export function Campus() {
     >
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
         <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="mb-12 max-w-xl md:mb-16"
         >

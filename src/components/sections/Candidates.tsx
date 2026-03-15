@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ParallaxLayer } from "@/components/ui/ParallaxLayer";
 
 const candidates = [
   {
@@ -64,23 +63,21 @@ function CandidateBlock({
       >
         {/* Headshot photo */}
         <div className="flex items-center justify-center md:flex-1">
-          <ParallaxLayer speed={0.1}>
-            <motion.div
-              className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white md:animate-float md:h-[22rem] md:w-[17rem] lg:h-[26rem] lg:w-[20rem]"
-              style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <img
-                src={candidate.photo}
-                alt={candidate.name}
-                className="h-full w-full object-cover"
-                style={{ objectPosition: candidate.cropPosition }}
-              />
-            </motion.div>
-          </ParallaxLayer>
+          <motion.div
+            className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white md:animate-float md:h-[22rem] md:w-[17rem] lg:h-[26rem] lg:w-[20rem]"
+            style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <img
+              src={candidate.photo}
+              alt={candidate.name}
+              className="h-full w-full object-cover"
+              style={{ objectPosition: candidate.cropPosition }}
+            />
+          </motion.div>
         </div>
 
         {/* Text card */}
@@ -111,9 +108,9 @@ export function Candidates() {
     <section id="candidates" className="overflow-hidden bg-cream-deep">
       <motion.div
         className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14"
-        initial={{ opacity: 0, y: 32 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
+        initial={{ opacity: 0, x: -24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
       >
         <span className="text-label text-text-muted">Your Candidates</span>
