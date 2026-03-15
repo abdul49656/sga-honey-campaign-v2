@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 const candidates = [
   {
@@ -74,20 +74,42 @@ function CandidateBlock({
 }
 
 export function Candidates() {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-60px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="candidates" className="bg-cream-deep">
-      <motion.div
+      <div
+        ref={headerRef}
         className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14"
-        initial={{ opacity: 0, x: -24 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateX(0)" : "translateX(-24px)",
+          transition: "opacity 650ms cubic-bezier(0.16,1,0.3,1), transform 650ms cubic-bezier(0.16,1,0.3,1)",
+          willChange: "transform, opacity",
+        }}
       >
         <span className="text-label text-text-muted">Your Candidates</span>
         <h2 className="mt-3 text-display-md text-text-primary">
           Meet the <em className="font-[family-name:var(--font-cormorant)] text-gold">team.</em>
         </h2>
-      </motion.div>
+      </div>
 
       {candidates.map((c, i) => (
         <CandidateBlock key={c.initial} candidate={c} index={i} />
