@@ -75,7 +75,7 @@ function CandidateBlock({
 
 export function Candidates() {
   return (
-    <section id="candidates" className="overflow-hidden bg-cream-deep">
+    <section id="candidates" className="bg-cream-deep">
       <motion.div
         className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14"
         initial={{ opacity: 0, x: -24 }}
