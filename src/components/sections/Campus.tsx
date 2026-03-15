@@ -11,6 +11,7 @@ const images = [
     caption: "For Every Bruin",
     width: "lg:col-span-2 lg:row-span-2",
     speed: 0.12,
+    objectPosition: "center 65%",
   },
   {
     src: "/campus/hub.jpg",
@@ -66,6 +67,7 @@ function GalleryItem({ img }: { img: (typeof images)[0] }) {
           alt={img.alt}
           loading="lazy"
           className="h-[120%] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+          style={{ objectPosition: img.objectPosition || "center center" }}
         />
       </motion.div>
 

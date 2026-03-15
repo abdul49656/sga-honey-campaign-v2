@@ -5,6 +5,7 @@ import { Marquee } from "@/components/sections/Marquee";
 import { Stats } from "@/components/sections/Stats";
 import { Candidates } from "@/components/sections/Candidates";
 import { Platform } from "@/components/sections/Platform";
+import { PhotoCarousel } from "@/components/sections/PhotoCarousel";
 import { PhotoGallery } from "@/components/sections/PhotoGallery";
 import { Campus } from "@/components/sections/Campus";
 import { CTA } from "@/components/sections/CTA";
@@ -19,6 +20,7 @@ export default function Home() {
         <Marquee />
         <Stats />
         <Candidates />
+        <PhotoCarousel />
         <Platform />
         <PhotoGallery />
         <Campus />

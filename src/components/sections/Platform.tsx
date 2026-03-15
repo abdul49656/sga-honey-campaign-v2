@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const pillars = [
   {
@@ -40,19 +41,25 @@ function PillarCard({
   pillar: (typeof pillars)[0];
   index: number;
 }) {
+  const isMobile = useIsMobile();
+
   return (
     <motion.div
       className="group relative overflow-hidden rounded-3xl bg-white p-8 transition-shadow duration-500 hover:shadow-xl md:p-10"
       style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: isMobile ? 0 : 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      transition={{
+        duration: isMobile ? 0.35 : 0.6,
+        delay: isMobile ? 0 : index * 0.07,
+        ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1],
+      }}
     >
       <div className="relative flex flex-col gap-5">
-        {/* Emoji + Number row — static */}
+        {/* Emoji + Number row */}
         <div className="flex items-center justify-between">
-          <span className="animate-emoji-bounce text-4xl md:text-5xl">
+          <span className="text-4xl md:text-5xl">
             {pillar.emoji}
           </span>
           <span className="font-[family-name:var(--font-cormorant)] text-[2rem] font-bold leading-none text-dark/15 md:text-[2.5rem]">
@@ -60,16 +67,13 @@ function PillarCard({
           </span>
         </div>
 
-        {/* Divider — static */}
         <div className="h-px w-full bg-dark/[0.08]" />
 
-        {/* Title — static */}
         <h3 className="font-[family-name:var(--font-cormorant)] text-display-md text-text-primary">
           {pillar.title}
         </h3>
 
-        {/* Description — static */}
-        <p className="max-w-md font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.8] text-text-secondary">
+        <p className="max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.8] text-text-secondary">
           {pillar.description}
         </p>
       </div>

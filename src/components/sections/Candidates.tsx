@@ -11,6 +11,7 @@ const candidates = [
     name: "Abi Daugherty",
     role: "President",
     photo: "/campaign/headshot-abi.jpg",
+    cropPosition: "35% 15%",
     bio: "Committed to amplifying every student voice on campus. With experience in student senate and a passion for mental health advocacy, Abi brings the leadership Belmont needs to thrive.",
   },
   {
@@ -18,6 +19,7 @@ const candidates = [
     name: "Dia Honey Abdullah",
     role: "Vice President",
     photo: "/campaign/headshot-dia.jpg",
+    cropPosition: "center 15%",
     bio: "A bridge-builder focused on campus unity and inclusion. Dia\u2019s background in community organizing and sustainability initiatives ensures every Bruin has a seat at the table.",
   },
 ];
@@ -58,10 +60,9 @@ function CandidateBlock({
               <img
                 src={candidate.photo}
                 alt={candidate.name}
-                className="h-full w-full object-cover object-[center_15%]"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: candidate.cropPosition }}
               />
-              {/* Gold accent bar at bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0" />
             </div>
           </motion.div>
 
@@ -125,10 +126,9 @@ function CandidateBlock({
               <img
                 src={candidate.photo}
                 alt={candidate.name}
-                className="h-full w-full object-cover object-[center_15%]"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: candidate.cropPosition }}
               />
-              {/* Gold accent bar at bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0" />
             </motion.div>
           </ParallaxLayer>
         </div>

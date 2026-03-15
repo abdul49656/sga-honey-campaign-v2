@@ -4,36 +4,54 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+/*
+  4-column grid layout (desktop):
+  Row 1: balcony(2×2)  | stairs(1×1)   | overhead(1×1)
+  Row 2: balcony cont. | houndstooth(2×1)
+  Row 3: lamppost(2×1) | lobby(2×1)
+*/
 const photos = [
   {
     src: "/campaign/duo-balcony.jpg",
     alt: "Daugherty & Honey on the Belmont balcony",
-    size: "large" as const,
+    gridClass: "col-span-2 row-span-2 aspect-[3/4]",
+    mobileClass: "col-span-2 aspect-[3/4]",
+    objectPosition: "center 20%",
   },
   {
     src: "/campaign/duo-stairs.jpg",
     alt: "Daugherty & Honey sitting on campus stairs",
-    size: "medium" as const,
+    gridClass: "col-span-1 aspect-[3/4]",
+    mobileClass: "col-span-1 aspect-[3/4]",
+    objectPosition: "center center",
   },
   {
     src: "/campaign/duo-overhead.jpg",
     alt: "Daugherty & Honey from above on brick walkway",
-    size: "small" as const,
+    gridClass: "col-span-1 aspect-[3/4]",
+    mobileClass: "col-span-1 aspect-[3/4]",
+    objectPosition: "center 55%",
   },
   {
     src: "/campaign/duo-closeup-houndstooth.jpg",
     alt: "Daugherty & Honey close-up portrait",
-    size: "wide" as const,
+    gridClass: "col-span-2 aspect-[16/9]",
+    mobileClass: "col-span-2 aspect-[16/10]",
+    objectPosition: "center 25%",
   },
   {
     src: "/campaign/duo-lamppost.jpg",
     alt: "Daugherty & Honey by campus lamp post",
-    size: "medium" as const,
+    gridClass: "col-span-2 aspect-[4/3]",
+    mobileClass: "col-span-1 aspect-[3/4]",
+    objectPosition: "center 20%",
   },
   {
     src: "/campaign/duo-lobby.jpg",
     alt: "Daugherty & Honey in the campus lobby",
-    size: "small" as const,
+    gridClass: "col-span-2 aspect-[4/3]",
+    mobileClass: "col-span-1 aspect-[3/4]",
+    objectPosition: "center 15%",
   },
 ];
 
@@ -52,13 +70,11 @@ function GalleryPhoto({
     offset: ["start end", "end start"],
   });
 
-  // Each photo gets a slightly different parallax speed
   const speeds = [0.06, 0.1, 0.14, 0.04, 0.12, 0.08];
   const speed = speeds[index % speeds.length];
   const y = useTransform(scrollYProgress, [0, 1], [speed * 120, speed * -120]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.95, 1, 1, 0.98]);
 
-  // Alternate entrance directions
   const directions = [
     { x: -30, y: 40, rotate: -2 },
     { x: 20, y: 30, rotate: 1 },
@@ -69,26 +85,11 @@ function GalleryPhoto({
   ];
   const dir = directions[index % directions.length];
 
-  // Size classes for the asymmetric grid
-  const sizeClasses = {
-    large: "col-span-2 row-span-2 aspect-[3/4]",
-    wide: "col-span-2 aspect-[16/9]",
-    medium: "col-span-1 aspect-[3/4]",
-    small: "col-span-1 aspect-square",
-  };
-
-  const mobileSizeClasses = {
-    large: "col-span-2 aspect-[3/4]",
-    wide: "col-span-2 aspect-[16/10]",
-    medium: "col-span-1 aspect-[3/4]",
-    small: "col-span-1 aspect-square",
-  };
-
   return (
     <motion.div
       ref={ref}
       className={`group relative overflow-hidden rounded-2xl lg:rounded-3xl ${
-        isMobile ? mobileSizeClasses[photo.size] : sizeClasses[photo.size]
+        isMobile ? photo.mobileClass : photo.gridClass
       }`}
       initial={{
         opacity: 0,
@@ -119,6 +120,7 @@ function GalleryPhoto({
           alt={photo.alt}
           loading="lazy"
           className="h-[115%] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+          style={{ objectPosition: photo.objectPosition }}
         />
       </motion.div>
 
@@ -150,7 +152,6 @@ export function PhotoGallery() {
         </motion.div>
       </div>
 
-      {/* Asymmetric photo grid */}
       <div className="mx-auto max-w-[90rem] px-3 md:px-6 lg:px-10">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3 lg:gap-4">
           {photos.map((photo, i) => (
