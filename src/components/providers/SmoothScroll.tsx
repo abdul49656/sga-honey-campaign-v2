@@ -16,8 +16,11 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    if (prefersReduced) return;
+    // Disable Lenis on mobile — native scroll works better with
+    // Framer Motion whileInView and avoids touchMultiplier jank.
+    if (prefersReduced || isMobile) return;
 
     const lenis = new Lenis({
       duration: 0.7,
