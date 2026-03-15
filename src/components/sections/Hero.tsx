@@ -36,7 +36,6 @@ export function Hero() {
           loop
           playsInline
           preload="auto"
-          poster="/campaign/duo-walking-fountain.jpg"
           className="h-full w-full object-cover"
         >
           <source src="/hero-video.mp4" type="video/mp4" />

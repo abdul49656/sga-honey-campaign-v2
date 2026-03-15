@@ -48,10 +48,10 @@ function CandidateBlock({
           {/* Headshot — mobile */}
           <motion.div
             className="flex items-center justify-center"
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
               className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white"
@@ -70,10 +70,10 @@ function CandidateBlock({
           <motion.div
             className="flex flex-col items-center text-center rounded-3xl bg-white p-8"
             style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.8, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="text-label text-gold">{candidate.role}</span>
             <h3 className="mt-3 font-[family-name:var(--font-cormorant)] text-display-lg text-text-primary">

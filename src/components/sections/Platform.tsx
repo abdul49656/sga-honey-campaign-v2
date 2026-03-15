@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const pillars = [
   {
@@ -60,17 +61,18 @@ function PillarCard({
   index: number;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <motion.div
       className="group relative overflow-hidden rounded-3xl bg-white p-8 transition-shadow duration-500 hover:shadow-xl md:p-10"
       style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: isMobile ? 20 : 32 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: isMobile ? "-20px" : "-60px" }}
       transition={{
-        duration: 0.65,
-        delay: index * 0.07,
+        duration: isMobile ? 0.85 : 0.65,
+        delay: isMobile ? index * 0.05 : index * 0.07,
         ease: [0.16, 1, 0.3, 1],
       }}
     >
