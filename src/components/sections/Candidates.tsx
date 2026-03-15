@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ParallaxLayer } from "@/components/ui/ParallaxLayer";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 const candidates = [
   {
@@ -32,7 +31,6 @@ function CandidateBlock({
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -41,62 +39,14 @@ function CandidateBlock({
   const watermarkY = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const isReversed = index % 2 !== 0;
 
-  if (isMobile) {
-    return (
-      <div className="relative overflow-hidden py-10">
-        <div className="relative mx-auto flex max-w-[90rem] flex-col gap-6 px-6">
-          {/* Headshot — mobile */}
-          <motion.div
-            className="flex items-center justify-center"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div
-              className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white"
-              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-            >
-              <img
-                src={candidate.photo}
-                alt={candidate.name}
-                className="h-full w-full object-cover"
-                style={{ objectPosition: candidate.cropPosition }}
-              />
-            </div>
-          </motion.div>
-
-          {/* Text card — mobile */}
-          <motion.div
-            className="flex flex-col items-center text-center rounded-3xl bg-white p-8"
-            style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.8, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="text-label text-gold">{candidate.role}</span>
-            <h3 className="mt-3 font-[family-name:var(--font-cormorant)] text-display-lg text-text-primary">
-              {candidate.name}
-            </h3>
-            <div className="mx-auto mt-4 h-px w-12 bg-gold/50" />
-            <p className="mt-6 max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.8] text-text-secondary">
-              {candidate.bio}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       ref={ref}
       className="relative overflow-hidden py-10 md:py-16 lg:py-20"
     >
-      {/* Watermark — parallax on desktop only */}
+      {/* Watermark — hidden on mobile, parallax on desktop */}
       <motion.span
-        className="pointer-events-none absolute top-1/2 -translate-y-1/2 select-none font-[family-name:var(--font-cormorant)] text-[clamp(14rem,30vw,25rem)] font-bold leading-none text-dark/[0.05]"
+        className="pointer-events-none absolute top-1/2 hidden -translate-y-1/2 select-none font-[family-name:var(--font-cormorant)] text-[clamp(14rem,30vw,25rem)] font-bold leading-none text-dark/[0.05] md:block"
         style={{
           y: watermarkY,
           right: isReversed ? "auto" : "5%",
@@ -108,20 +58,20 @@ function CandidateBlock({
       </motion.span>
 
       <div
-        className={`relative mx-auto flex max-w-[90rem] flex-col gap-8 px-6 md:flex-row md:items-center md:gap-12 md:px-10 lg:gap-20 lg:px-14 ${
+        className={`relative mx-auto flex max-w-[90rem] flex-col gap-6 px-6 md:flex-row md:items-center md:gap-12 md:px-10 lg:gap-20 lg:px-14 ${
           isReversed ? "md:flex-row-reverse" : ""
         }`}
       >
         {/* Headshot photo */}
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex items-center justify-center md:flex-1">
           <ParallaxLayer speed={0.1}>
             <motion.div
-              className="animate-float relative overflow-hidden rounded-3xl bg-white md:h-[22rem] md:w-[17rem] lg:h-[26rem] lg:w-[20rem]"
-              style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
-              initial={{ opacity: 0, y: 24 }}
+              className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white md:animate-float md:h-[22rem] md:w-[17rem] lg:h-[26rem] lg:w-[20rem]"
+              style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             >
               <img
                 src={candidate.photo}
@@ -135,12 +85,12 @@ function CandidateBlock({
 
         {/* Text card */}
         <motion.div
-          className="flex-1 flex flex-col items-center text-center rounded-3xl bg-white p-8 md:p-10"
+          className="flex flex-col items-center text-center rounded-3xl bg-white p-8 md:flex-1 md:p-10"
           style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.65, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="text-label text-gold">{candidate.role}</span>
           <h3 className="mt-3 font-[family-name:var(--font-cormorant)] text-display-lg text-text-primary">
