@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const candidates = [
   {
     initial: "D",
@@ -72,12 +76,18 @@ function CandidateBlock({
 export function Candidates() {
   return (
     <section id="candidates" className="overflow-hidden bg-cream-deep">
-      <div className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14">
+      <motion.div
+        className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14"
+        initial={{ opacity: 0, x: -24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+      >
         <span className="text-label text-text-muted">Your Candidates</span>
         <h2 className="mt-3 text-display-md text-text-primary">
           Meet the <em className="font-[family-name:var(--font-cormorant)] text-gold">team.</em>
         </h2>
-      </div>
+      </motion.div>
 
       {candidates.map((c, i) => (
         <CandidateBlock key={c.initial} candidate={c} index={i} />
