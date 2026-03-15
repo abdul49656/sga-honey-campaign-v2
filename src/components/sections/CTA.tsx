@@ -26,7 +26,7 @@ export function CTA() {
     >
       {/* Background campaign photo with parallax */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-[-20%]"
         style={isMobile ? {} : { y: bgY, scale: bgScale }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -35,12 +35,12 @@ export function CTA() {
           alt=""
           aria-hidden="true"
           className="h-full w-full object-cover"
-          style={{ objectPosition: "center 30%" }}
+          style={{ objectPosition: "center 40%" }}
         />
       </motion.div>
 
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-dark/75" />
+      <div className="absolute inset-0 bg-dark/60" />
 
       <div className="relative mx-auto max-w-[90rem]">
         <div className="mx-auto max-w-3xl text-center">

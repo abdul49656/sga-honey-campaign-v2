@@ -37,7 +37,7 @@ export function Footer() {
             <span className="font-[family-name:var(--font-cormorant)] text-xl font-bold tracking-[-0.02em]">
               Daugherty & Honey
             </span>
-            <p className="mt-4 max-w-[260px] font-[family-name:var(--font-dm-sans)] text-[0.875rem] leading-[1.7] text-text-secondary">
+            <p className="mt-4 max-w-[260px] font-[family-name:var(--font-montserrat)] text-[0.875rem] leading-[1.7] text-text-secondary">
               A golden vision for Belmont. Student wellness, campus unity,
               academic advocacy, and sustainability.
             </p>
@@ -46,7 +46,7 @@ export function Footer() {
                 <MagneticWrapper key={platform} strength={0.4}>
                   <a
                     href="#"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-dark/8 font-[family-name:var(--font-figtree)] text-[0.625rem] font-semibold text-text-secondary transition-all duration-300 hover:border-dark/20 hover:text-text-primary"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-dark/8 font-[family-name:var(--font-montserrat)] text-[0.625rem] font-semibold text-text-secondary transition-all duration-300 hover:border-dark/20 hover:text-text-primary"
                   >
                     {platform}
                   </a>
@@ -64,7 +64,7 @@ export function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="group inline-flex items-center font-[family-name:var(--font-dm-sans)] text-[0.875rem] text-text-secondary transition-colors duration-300 hover:text-text-primary"
+                      className="group inline-flex items-center font-[family-name:var(--font-montserrat)] text-[0.875rem] text-text-secondary transition-colors duration-300 hover:text-text-primary"
                     >
                       <span className="inline-block h-px w-0 bg-dark transition-all duration-300 group-hover:mr-2.5 group-hover:w-4" />
                       {link.label}
@@ -78,7 +78,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-dark/[0.06] pt-8 sm:flex-row">
-          <p className="font-[family-name:var(--font-dm-sans)] text-[0.75rem] text-text-muted">
+          <p className="font-[family-name:var(--font-montserrat)] text-[0.75rem] text-text-muted">
             &copy; 2026 Daugherty & Honey Campaign. Belmont University.
           </p>
 

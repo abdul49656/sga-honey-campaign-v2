@@ -28,7 +28,7 @@ export function TextSwapButton({
   const chars = children.split("");
 
   const baseStyles =
-    "group relative inline-flex items-center justify-center overflow-hidden font-[family-name:var(--font-figtree)] text-[0.8125rem] font-semibold uppercase tracking-[0.08em] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]";
+    "group relative inline-flex items-center justify-center overflow-hidden font-[family-name:var(--font-montserrat)] text-[0.8125rem] font-semibold uppercase tracking-[0.08em] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]";
 
   const variantStyles = {
     filled:

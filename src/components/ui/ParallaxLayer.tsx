@@ -14,7 +14,7 @@ export function ParallaxLayer({
   speed = 0.5,
   className,
 }: ParallaxLayerProps) {
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

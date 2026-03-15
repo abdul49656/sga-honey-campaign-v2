@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -14,15 +15,17 @@ export function ScrollReveal({
   className,
   delay = 0,
 }: ScrollRevealProps) {
+  const isMobile = useIsMobile();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{
-        duration: 0.5,
-        delay,
-        ease: [0, 0, 0.2, 1],
+        duration: isMobile ? 0.35 : 0.5,
+        delay: isMobile ? 0 : delay,
+        ease: isMobile ? "easeOut" : [0, 0, 0.2, 1],
       }}
       className={className}
     >

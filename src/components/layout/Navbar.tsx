@@ -25,7 +25,7 @@ function SplitHoverLink({
     <a
       href={href}
       className={cn(
-        "group relative inline-block overflow-hidden font-[family-name:var(--font-figtree)] text-[0.75rem] font-semibold uppercase tracking-[0.1em]",
+        "group relative inline-block overflow-hidden font-[family-name:var(--font-montserrat)] text-[0.75rem] font-semibold uppercase tracking-[0.1em]",
         className
       )}
     >
@@ -111,7 +111,7 @@ export function Navbar() {
             <a
               href="#involved"
               className={cn(
-                "group relative inline-flex items-center overflow-hidden font-[family-name:var(--font-figtree)] text-[0.75rem] font-semibold uppercase tracking-[0.08em] transition-all duration-500",
+                "group relative inline-flex items-center overflow-hidden font-[family-name:var(--font-montserrat)] text-[0.75rem] font-semibold uppercase tracking-[0.08em] transition-all duration-500",
                 scrolled
                   ? "text-dark"
                   : "text-white"
@@ -162,7 +162,7 @@ export function Navbar() {
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
-                className="flex items-center gap-2 font-[family-name:var(--font-figtree)] text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-white/50"
+                className="flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-white/50"
               >
                 Close
                 <span className="relative flex h-5 w-5 items-center justify-center">

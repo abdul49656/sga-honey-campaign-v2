@@ -71,8 +71,8 @@ export function Hero() {
 
         {/* Massive headline */}
         {isMobile ? (
-          <div className="mt-5 font-[family-name:var(--font-cormorant)] font-bold text-white"
-               style={{ fontSize: "28vw", lineHeight: 0.88, letterSpacing: "-0.03em" }}>
+          <div className="text-display-hero mt-5 text-white"
+               style={{ fontSize: "28vw", lineHeight: 0.88 }}>
             <motion.div
               className="whitespace-nowrap"
               initial={{ opacity: 0, y: 20 }}
@@ -110,7 +110,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-sm font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.7] text-white/70"
+            className="max-w-sm font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-white/70"
           >
             Daugherty & Honey for SGA President & Vice President.
             A bold vision for every Bruin.
@@ -135,7 +135,7 @@ export function Hero() {
         transition={{ duration: 0.8, delay: 1.5 }}
         className="absolute bottom-8 left-1/2 z-[1] flex -translate-x-1/2 flex-col items-center gap-3"
       >
-        <span className="font-[family-name:var(--font-figtree)] text-[0.5rem] font-semibold uppercase tracking-[0.18em] text-white/45">
+        <span className="font-[family-name:var(--font-montserrat)] text-[0.5rem] font-semibold uppercase tracking-[0.18em] text-white/45">
           Scroll
         </span>
         <motion.div

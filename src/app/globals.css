@@ -52,14 +52,15 @@
   --color-border-gold: var(--border-gold);
 
   --font-display: var(--font-cormorant);
-  --font-body: var(--font-dm-sans);
-  --font-ui: var(--font-figtree);
+  --font-body: var(--font-montserrat);
+  --font-ui: var(--font-montserrat);
 
   --animate-marquee: marquee 60s linear infinite;
   --animate-marquee-reverse: marquee-reverse 60s linear infinite;
   --animate-float: float 4s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
   --animate-emoji-bounce: emoji-bounce 2s ease-in-out infinite;
+  --animate-carousel: carousel 40s linear infinite;
 }
 
 @keyframes marquee {
@@ -87,6 +88,11 @@
   50% { transform: scale(1.1); }
 }
 
+@keyframes carousel {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
 /* ============================================= */
 /* Base                                          */
 /* ============================================= */
@@ -100,7 +106,7 @@ html {
 body {
   background: var(--cream);
   color: var(--text-primary);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-montserrat), system-ui, sans-serif;
 }
 
 /* Hide default cursor on desktop when custom cursor active */
@@ -184,6 +190,18 @@ body {
 
 .input-underline:focus {
   border-bottom-color: var(--gold);
+}
+
+/* ============================================= */
+/* Mobile — disable continuous CSS animations    */
+/* ============================================= */
+
+@media (max-width: 767px) {
+  .animate-float,
+  .animate-emoji-bounce,
+  .animate-pulse-glow {
+    animation: none !important;
+  }
 }
 
 /* ============================================= */

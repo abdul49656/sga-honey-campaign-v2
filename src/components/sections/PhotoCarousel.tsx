@@ -1,8 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-
 const carouselImages = [
   { src: "/campaign/duo-balcony.jpg", alt: "Daugherty & Honey on balcony" },
   { src: "/campaign/duo-fountain-wave.jpg", alt: "Waving at the fountain" },
@@ -31,27 +28,16 @@ function CarouselImage({ src, alt }: { src: string; alt: string }) {
 }
 
 export function PhotoCarousel() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Scroll-linked horizontal movement — moves strip as user scrolls page
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-
-  const images = [...carouselImages, ...carouselImages];
+  // Triple the images for seamless infinite loop
+  const images = [...carouselImages, ...carouselImages, ...carouselImages];
 
   return (
-    <div ref={sectionRef} className="overflow-hidden bg-cream-deep py-12 md:py-16">
-      <motion.div
-        className="flex gap-3 md:gap-4"
-        style={{ x }}
-      >
+    <div className="overflow-hidden bg-cream-deep py-12 md:py-16">
+      <div className="flex w-max gap-3 animate-carousel md:gap-4">
         {images.map((img, i) => (
           <CarouselImage key={`${img.src}-${i}`} src={img.src} alt={img.alt} />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

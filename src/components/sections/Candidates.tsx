@@ -11,7 +11,7 @@ const candidates = [
     name: "Abi Daugherty",
     role: "President",
     photo: "/campaign/headshot-abi.jpg",
-    cropPosition: "35% 15%",
+    cropPosition: "45% 15%",
     bio: "Committed to amplifying every student voice on campus. With experience in student senate and a passion for mental health advocacy, Abi brings the leadership Belmont needs to thrive.",
   },
   {

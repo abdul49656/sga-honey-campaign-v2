@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans, Figtree } from "next/font/google";
+import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScroll";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { CustomCursor } from "@/components/ui/CustomCursor";
@@ -12,17 +12,10 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const figtree = Figtree({
-  variable: "--font-figtree",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -40,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cormorant.variable} ${dmSans.variable} ${figtree.variable} antialiased`}
+        className={`${cormorant.variable} ${montserrat.variable} antialiased`}
       >
         <SmoothScrollProvider>
           {children}
