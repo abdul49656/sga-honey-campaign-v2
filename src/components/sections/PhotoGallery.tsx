@@ -28,11 +28,11 @@ export function PhotoGallery() {
       </div>
 
       <div className="mx-auto max-w-[90rem] px-3 md:px-6 lg:px-10">
-        <div ref={gridRef} className="columns-2 gap-3 md:columns-3 lg:gap-4">
+        <div ref={gridRef} className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:gap-4">
           {photos.map((photo, i) => (
             <div
               key={photo.src}
-              className="group mb-3 break-inside-avoid overflow-hidden rounded-2xl lg:mb-4 lg:rounded-3xl"
+              className="group aspect-[3/4] overflow-hidden rounded-2xl lg:rounded-3xl"
               style={fadeUp(gridVisible, i * 70)}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -40,7 +40,7 @@ export function PhotoGallery() {
                 src={photo.src}
                 alt={photo.alt}
                 loading="lazy"
-                className="block w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
               />
             </div>
           ))}
