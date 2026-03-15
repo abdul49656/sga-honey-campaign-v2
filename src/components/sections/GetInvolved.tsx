@@ -1,10 +1,9 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { TextReveal } from "@/components/ui/TextReveal";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { AnimatePresence, motion } from "framer-motion";
 import { TextSwapButton } from "@/components/ui/TextSwapButton";
+import { useScrollReveal, slideLeft, fadeUp } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
 
 const GOOGLE_SHEET_URL =
@@ -15,18 +14,15 @@ const contactItems = [
   { emoji: "📸", label: "Instagram", value: "@policythatsticks" },
 ];
 
-const classYearOptions = [
-  "Freshman",
-  "Sophomore",
-  "Junior",
-  "Senior",
-];
+const classYearOptions = ["Freshman", "Sophomore", "Junior", "Senior"];
 
 export function GetInvolved() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [classYear, setClassYear] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
-  const isMobile = useIsMobile();
+
+  const { ref: leftRef, visible: leftVisible } = useScrollReveal();
+  const { ref: rightRef, visible: rightVisible } = useScrollReveal();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -65,18 +61,11 @@ export function GetInvolved() {
       <div className="mx-auto max-w-[90rem]">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
           {/* Left — Info */}
-          <motion.div
-            initial={{ opacity: 0, x: isMobile ? 0 : -32, y: isMobile ? 32 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div ref={leftRef} style={slideLeft(leftVisible)}>
             <span className="text-label text-text-muted">Get Involved</span>
             <h2 className="mt-3 text-display-md text-text-primary">
               Join the{" "}
-              <em className="font-[family-name:var(--font-cormorant)] text-gold">
-                <TextReveal>Hive.</TextReveal>
-              </em>
+              <em className="font-[family-name:var(--font-cormorant)] text-gold">Hive.</em>
             </h2>
             <p className="mt-4 max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-text-secondary">
               Whether you want to volunteer, ask a question, or just connect,
@@ -85,70 +74,38 @@ export function GetInvolved() {
 
             <div className="mt-12 flex flex-col gap-8">
               {contactItems.map((item, i) => (
-                  <motion.div
-                    key={item.label}
-                    className="group flex items-center gap-5"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{
-                      duration: 0.55,
-                      delay: 0.1 + i * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                  >
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-dark/15 bg-white shadow-sm transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold/5">
-                      <span className="text-lg">{item.emoji}</span>
-                    </div>
-                    <div>
-                      <span className="block text-label text-[0.6rem] text-text-muted">
-                        {item.label}
-                      </span>
-                      <span className="font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-text-secondary">
-                        {item.value}
-                      </span>
-                    </div>
-                  </motion.div>
+                <div
+                  key={item.label}
+                  className="group flex items-center gap-5"
+                  style={fadeUp(leftVisible, 200 + i * 80)}
+                >
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-dark/15 bg-white shadow-sm transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold/5">
+                    <span className="text-lg">{item.emoji}</span>
+                  </div>
+                  <div>
+                    <span className="block text-label text-[0.6rem] text-text-muted">{item.label}</span>
+                    <span className="font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-text-secondary">
+                      {item.value}
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Right — Form */}
-          <motion.div
-            initial={{ opacity: 0, x: isMobile ? 0 : 32, y: isMobile ? 32 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div ref={rightRef} style={fadeUp(rightVisible, 100)}>
             <form
               ref={formRef}
               onSubmit={handleSubmit}
               className="space-y-8 rounded-3xl bg-white p-6 md:p-10"
               style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
             >
-              {/* Name */}
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder="Full name"
-                className="input-underline"
-              />
+              <input type="text" name="name" required placeholder="Full name" className="input-underline" />
+              <input type="email" name="email" required placeholder="you@belmont.edu" className="input-underline" />
 
-              {/* Email */}
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="you@belmont.edu"
-                className="input-underline"
-              />
-
-              {/* Interest — text toggles */}
               <div>
-                <span className="text-label text-[0.6rem] text-text-muted">
-                  I am a...
-                </span>
+                <span className="text-label text-[0.6rem] text-text-muted">I am a...</span>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {classYearOptions.map((opt) => (
                     <button
@@ -168,7 +125,6 @@ export function GetInvolved() {
                 </div>
               </div>
 
-              {/* Message */}
               <textarea
                 name="message"
                 rows={3}
@@ -176,58 +132,32 @@ export function GetInvolved() {
                 className="input-underline resize-none"
               />
 
-              {/* Submit */}
               <div className="pt-2">
                 <AnimatePresence mode="wait">
                   {status === "idle" && (
-                    <motion.div
-                      key="idle"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                    >
-                      <TextSwapButton type="submit" variant="dark">
-                        Send It
-                      </TextSwapButton>
+                    <motion.div key="idle" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
+                      <TextSwapButton type="submit" variant="dark">Send It</TextSwapButton>
                     </motion.div>
                   )}
                   {status === "sending" && (
-                    <motion.p
-                      key="sending"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      className="text-label text-text-muted"
-                    >
+                    <motion.p key="sending" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="text-label text-text-muted">
                       Sending...
                     </motion.p>
                   )}
                   {status === "sent" && (
-                    <motion.p
-                      key="sent"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-label text-emerald-600"
-                    >
+                    <motion.p key="sent" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="text-label text-emerald-600">
                       Sent!
                     </motion.p>
                   )}
                   {status === "error" && (
-                    <motion.p
-                      key="error"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-label text-red-500"
-                    >
+                    <motion.p key="error" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="text-label text-red-500">
                       Something went wrong
                     </motion.p>
                   )}
                 </AnimatePresence>
               </div>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

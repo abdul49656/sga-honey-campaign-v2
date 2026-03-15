@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { TextReveal } from "@/components/ui/TextReveal";
+import { useScrollReveal, slideLeft, fadeUp } from "@/hooks/useScrollReveal";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 const images = [
@@ -14,53 +14,22 @@ const images = [
     speed: 0.12,
     objectPosition: "center 65%",
   },
-  {
-    src: "/campus/hub.jpg",
-    alt: "Belmont campus hub",
-    caption: "The Hub",
-    width: "",
-    speed: 0.2,
-  },
-  {
-    src: "/campus/wellness.jpg",
-    alt: "Student wellness programs",
-    caption: "Wellness First",
-    width: "",
-    speed: 0.08,
-  },
-  {
-    src: "/campus/student.jpg",
-    alt: "Belmont student life",
-    caption: "Student Life",
-    width: "",
-    speed: 0.15,
-  },
-  {
-    src: "/campus/community.jpg",
-    alt: "Belmont community",
-    caption: "Community",
-    width: "",
-    speed: 0.1,
-  },
+  { src: "/campus/hub.jpg",       alt: "Belmont campus hub",       caption: "The Hub",       width: "", speed: 0.2  },
+  { src: "/campus/wellness.jpg",  alt: "Student wellness programs", caption: "Wellness First", width: "", speed: 0.08 },
+  { src: "/campus/student.jpg",   alt: "Belmont student life",      caption: "Student Life",  width: "", speed: 0.15 },
+  { src: "/campus/community.jpg", alt: "Belmont community",         caption: "Community",     width: "", speed: 0.1  },
 ];
 
-// Desktop: full scroll-parallax version
 function GalleryItemDesktop({ img }: { img: (typeof images)[0] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [img.speed * 100, img.speed * -100]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 1], [0.95, 1, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
-    <motion.div
+    <div
       ref={ref}
       className={`group relative min-h-[240px] overflow-hidden rounded-2xl lg:aspect-[4/3] lg:min-h-0 ${img.width}`}
-      style={{ opacity }}
     >
       <motion.div className="absolute inset-0" style={{ y, scale }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -72,29 +41,25 @@ function GalleryItemDesktop({ img }: { img: (typeof images)[0] }) {
           style={{ objectPosition: img.objectPosition || "center center" }}
         />
       </motion.div>
-
       <div className="absolute inset-0 bg-black/10 transition-opacity duration-500 group-hover:bg-black/0" />
-
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute bottom-0 left-0 right-0 p-5">
-          <span className="text-label text-[0.625rem] text-white/90">
-            {img.caption}
-          </span>
+          <span className="text-label text-[0.625rem] text-white/90">{img.caption}</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Mobile: no scroll listeners, pure CSS opacity fade via Framer Motion whileInView
-function GalleryItemMobile({ img, index }: { img: (typeof images)[0]; index: number }) {
+function GalleryItem({ img, index, gridVisible }: { img: (typeof images)[0]; index: number; gridVisible: boolean }) {
+  const isMobile = useIsMobile();
+
+  if (!isMobile) return <GalleryItemDesktop img={img} />;
+
   return (
-    <motion.div
+    <div
       className={`group relative min-h-[220px] overflow-hidden rounded-2xl ${img.width}`}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      style={fadeUp(gridVisible, index * 60)}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -104,50 +69,33 @@ function GalleryItemMobile({ img, index }: { img: (typeof images)[0]; index: num
         className="h-full w-full object-cover"
         style={{ objectPosition: img.objectPosition || "center center" }}
       />
-    </motion.div>
+    </div>
   );
 }
 
-function GalleryItem({ img, index }: { img: (typeof images)[0]; index: number }) {
-  const isMobile = useIsMobile();
-  return isMobile
-    ? <GalleryItemMobile img={img} index={index} />
-    : <GalleryItemDesktop img={img} />;
-}
-
 export function Campus() {
-  const isMobile = useIsMobile();
+  const { ref: headerRef, visible: headerVisible } = useScrollReveal();
+  const { ref: gridRef, visible: gridVisible } = useScrollReveal();
 
   return (
-    <section
-      id="campus"
-      className="bg-cream"
-      style={{ padding: "var(--section-pad-y) 0" }}
-    >
+    <section id="campus" className="bg-cream" style={{ padding: "var(--section-pad-y) 0" }}>
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
-        <motion.div
-          initial={{ opacity: 0, x: -24 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12 max-w-xl md:mb-16"
-        >
+        <div ref={headerRef} className="mb-12 max-w-xl md:mb-16" style={slideLeft(headerVisible)}>
           <span className="text-label text-text-muted">Campus Life</span>
           <h2 className="mt-3 text-display-md text-text-primary">
             This is <em className="font-[family-name:var(--font-cormorant)] text-gold">our</em>{" "}
-            <TextReveal>Belmont.</TextReveal>
+            Belmont.
           </h2>
           <p className="mt-4 max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-text-secondary">
             A campus that inspires, connects, and supports every student.
           </p>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Gallery grid — full bleed */}
       <div className="mx-auto max-w-[90rem] px-3 md:px-6 lg:px-10">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 md:gap-3">
+        <div ref={gridRef} className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 md:gap-3">
           {images.map((img, i) => (
-            <GalleryItem key={img.caption} img={img} index={i} />
+            <GalleryItem key={img.caption} img={img} index={i} gridVisible={gridVisible} />
           ))}
         </div>
       </div>

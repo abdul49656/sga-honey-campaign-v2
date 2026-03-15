@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { AnimatePresence, motion } from "framer-motion";
+import { useScrollReveal, slideLeft, fadeUp } from "@/hooks/useScrollReveal";
 
 const pillars = [
   {
@@ -55,33 +55,26 @@ const pillars = [
 
 function PillarCard({
   pillar,
-  index,
+  visible,
+  staggerIndex,
 }: {
   pillar: (typeof pillars)[0];
-  index: number;
+  visible: boolean;
+  staggerIndex: number;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const isMobile = useIsMobile();
 
   return (
-    <motion.div
+    <div
       className="group relative overflow-hidden rounded-3xl bg-white p-8 transition-shadow duration-500 hover:shadow-xl md:p-10"
-      style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
-      initial={{ opacity: 0, y: isMobile ? 20 : 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: isMobile ? "-20px" : "-60px" }}
-      transition={{
-        duration: isMobile ? 0.85 : 0.65,
-        delay: isMobile ? index * 0.05 : index * 0.07,
-        ease: [0.16, 1, 0.3, 1],
+      style={{
+        boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)",
+        ...fadeUp(visible, staggerIndex * 80),
       }}
     >
       <div className="relative flex flex-col gap-5">
-        {/* Emoji + Number row */}
         <div className="flex items-center justify-between">
-          <span className="text-4xl md:text-5xl">
-            {pillar.emoji}
-          </span>
+          <span className="text-4xl md:text-5xl">{pillar.emoji}</span>
           <span className="font-[family-name:var(--font-cormorant)] text-[2rem] font-bold leading-none text-dark/15 md:text-[2.5rem]">
             {pillar.number}
           </span>
@@ -97,7 +90,6 @@ function PillarCard({
           {pillar.summary}
         </p>
 
-        {/* Expandable details */}
         <AnimatePresence>
           {expanded && (
             <motion.div
@@ -119,7 +111,6 @@ function PillarCard({
           )}
         </AnimatePresence>
 
-        {/* Read more toggle */}
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
@@ -128,20 +119,20 @@ function PillarCard({
           {expanded ? "Show less" : "Read more"}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export function Platform() {
+  const { ref: headerRef, visible: headerVisible } = useScrollReveal();
+  const { ref: gridRef, visible: gridVisible } = useScrollReveal();
+
   return (
-    <section id="platform" className="overflow-hidden bg-cream-deep">
-      <motion.div
+    <section id="platform" className="bg-cream-deep">
+      <div
+        ref={headerRef}
         className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14"
-        style={{ paddingTop: "var(--section-pad-y)" }}
-        initial={{ opacity: 0, x: -24 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        style={{ paddingTop: "var(--section-pad-y)", ...slideLeft(headerVisible) }}
       >
         <span className="text-label text-text-muted">Our Platform</span>
         <h2 className="mt-3 text-display-md text-text-primary">
@@ -149,12 +140,15 @@ export function Platform() {
           <em className="font-[family-name:var(--font-cormorant)] text-gold">brighter</em>{" "}
           Belmont.
         </h2>
-      </motion.div>
+      </div>
 
-      <div className="mx-auto mt-12 max-w-[90rem] px-6 pb-16 md:mt-16 md:px-10 md:pb-24 lg:px-14">
+      <div
+        ref={gridRef}
+        className="mx-auto mt-12 max-w-[90rem] px-6 pb-16 md:mt-16 md:px-10 md:pb-24 lg:px-14"
+      >
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           {pillars.map((pillar, i) => (
-            <PillarCard key={pillar.number} pillar={pillar} index={i} />
+            <PillarCard key={pillar.number} pillar={pillar} visible={gridVisible} staggerIndex={i} />
           ))}
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useScrollReveal, slideLeft, fadeUp } from "@/hooks/useScrollReveal";
 
 const candidates = [
   {
@@ -29,16 +29,17 @@ function CandidateBlock({
   index: number;
 }) {
   const isReversed = index % 2 !== 0;
+  const { ref, visible } = useScrollReveal();
 
   return (
-    <div className="relative overflow-hidden py-10 md:py-16 lg:py-20">
+    <div ref={ref} className="relative py-10 md:py-16 lg:py-20">
       <div
         className={`relative mx-auto flex max-w-[90rem] flex-col gap-6 px-6 md:flex-row md:items-center md:gap-12 md:px-10 lg:gap-20 lg:px-14 ${
           isReversed ? "md:flex-row-reverse" : ""
         }`}
       >
         {/* Headshot photo */}
-        <div className="flex items-center justify-center md:flex-1">
+        <div className="flex items-center justify-center md:flex-1" style={fadeUp(visible, 0)}>
           <div
             className="relative h-64 w-52 overflow-hidden rounded-3xl bg-white md:h-[22rem] md:w-[17rem] lg:h-[26rem] lg:w-[20rem]"
             style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
@@ -57,7 +58,10 @@ function CandidateBlock({
         {/* Text card */}
         <div
           className="flex flex-col items-center text-center rounded-3xl bg-white p-8 md:flex-1 md:p-10"
-          style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}
+          style={{
+            boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)",
+            ...fadeUp(visible, 120),
+          }}
         >
           <span className="text-label text-gold">{candidate.role}</span>
           <h3 className="mt-3 font-[family-name:var(--font-cormorant)] text-display-lg text-text-primary">
@@ -74,36 +78,14 @@ function CandidateBlock({
 }
 
 export function Candidates() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "-60px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const { ref: headerRef, visible: headerVisible } = useScrollReveal();
 
   return (
     <section id="candidates" className="bg-cream-deep">
       <div
         ref={headerRef}
         className="mx-auto max-w-[90rem] px-6 pt-16 md:px-10 md:pt-24 lg:px-14"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateX(0)" : "translateX(-24px)",
-          transition: "opacity 650ms cubic-bezier(0.16,1,0.3,1), transform 650ms cubic-bezier(0.16,1,0.3,1)",
-          willChange: "transform, opacity",
-        }}
+        style={slideLeft(headerVisible)}
       >
         <span className="text-label text-text-muted">Your Candidates</span>
         <h2 className="mt-3 text-display-md text-text-primary">

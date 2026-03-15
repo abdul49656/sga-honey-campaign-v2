@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { TextSwapButton } from "@/components/ui/TextSwapButton";
+import { useScrollReveal, fadeUp } from "@/hooks/useScrollReveal";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function CTA() {
@@ -18,13 +19,15 @@ export function CTA() {
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.05, 1]);
 
+  const { ref: contentRef, visible } = useScrollReveal();
+
   return (
     <section
       ref={sectionRef}
       className="relative overflow-hidden bg-dark"
       style={{ padding: "clamp(8rem, 16vh, 14rem) var(--section-pad-x)" }}
     >
-      {/* Background campaign photo with parallax */}
+      {/* Background with parallax on desktop */}
       <motion.div
         className="absolute inset-[-20%]"
         style={isMobile ? {} : { y: bgY, scale: bgScale }}
@@ -39,43 +42,30 @@ export function CTA() {
         />
       </motion.div>
 
-      {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-dark/60" />
 
-      <div className="relative mx-auto max-w-[90rem]">
+      <div ref={contentRef} className="relative mx-auto max-w-[90rem]">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-display-lg text-white">
-            <TextReveal delay={0} stagger={0.04}>
-              Ready to make it
-            </TextReveal>
+            <TextReveal delay={0} stagger={0.04}>Ready to make it</TextReveal>
             <br />
             <span className="text-gold">
-              <TextReveal delay={0.3} stagger={0.03} splitBy="chars">
-                golden?
-              </TextReveal>
+              <TextReveal delay={0.3} stagger={0.03} splitBy="chars">golden?</TextReveal>
             </span>
           </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.65, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          <p
             className="mt-6 font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-white/65"
+            style={fadeUp(visible, 350)}
           >
             Your vote is your voice. Make it count.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.65, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          <div
             className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+            style={fadeUp(visible, 500)}
           >
-            <TextSwapButton href="#involved" variant="filled">
-              Join the Campaign
-            </TextSwapButton>
+            <TextSwapButton href="#involved" variant="filled">Join the Campaign</TextSwapButton>
             <TextSwapButton
               href="#platform"
               variant="outline"
@@ -83,7 +73,7 @@ export function CTA() {
             >
               Read Our Platform
             </TextSwapButton>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
