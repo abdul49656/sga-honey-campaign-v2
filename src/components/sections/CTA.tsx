@@ -46,7 +46,7 @@ export function CTA() {
 
       <div ref={contentRef} className="relative mx-auto max-w-[90rem]">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-display-lg text-white">
+          <h2 className="text-display-lg leading-[0.95] text-white">
             <TextReveal delay={0} stagger={0.04}>Ready to make it</TextReveal>
             <br />
             <span className="text-gold">

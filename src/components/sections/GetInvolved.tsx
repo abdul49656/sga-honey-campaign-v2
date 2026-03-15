@@ -10,8 +10,8 @@ const GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbxT5KQsuLEFscY4drvf_FSMxHaOl3Ogs7p4q3f3NTKX9FoPhPY5LfzN19zTrWWy_E93og/exec";
 
 const contactItems = [
-  { emoji: "📧", label: "Email", value: "abigail.daugherty@bruins.belmont.edu" },
-  { emoji: "📸", label: "Instagram", value: "@policythatsticks" },
+  { emoji: "📧", label: "Email", value: "abigail.daugherty@bruins.belmont.edu", href: "mailto:abigail.daugherty@bruins.belmont.edu" },
+  { emoji: "📸", label: "Instagram", value: "@policythatsticks", href: "https://instagram.com/policythatsticks" },
 ];
 
 const classYearOptions = ["Freshman", "Sophomore", "Junior", "Senior"];
@@ -63,7 +63,7 @@ export function GetInvolved() {
           {/* Left — Info */}
           <div ref={leftRef} style={slideLeft(leftVisible)}>
             <span className="text-label text-text-muted">Get Involved</span>
-            <h2 className="mt-3 text-display-md text-text-primary">
+            <h2 className="mt-1.5 text-display-md text-text-primary">
               Join the{" "}
               <em className="font-[family-name:var(--font-cormorant)] text-gold">Hive.</em>
             </h2>
@@ -74,8 +74,11 @@ export function GetInvolved() {
 
             <div className="mt-12 flex flex-col gap-8">
               {contactItems.map((item, i) => (
-                <div
+                <a
                   key={item.label}
+                  href={item.href}
+                  target={item.label === "Instagram" ? "_blank" : undefined}
+                  rel={item.label === "Instagram" ? "noopener noreferrer" : undefined}
                   className="group flex items-center gap-5"
                   style={fadeUp(leftVisible, 200 + i * 80)}
                 >
@@ -84,11 +87,11 @@ export function GetInvolved() {
                   </div>
                   <div>
                     <span className="block text-label text-[0.6rem] text-text-muted">{item.label}</span>
-                    <span className="font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-text-secondary">
+                    <span className="font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-text-secondary transition-colors duration-300 group-hover:text-text-primary">
                       {item.value}
                     </span>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </div>

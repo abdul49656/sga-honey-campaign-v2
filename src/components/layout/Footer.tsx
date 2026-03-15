@@ -32,16 +32,16 @@ export function Footer() {
               academic advocacy, and sustainability.
             </p>
             <div className="mt-6 flex gap-3">
-              {["IG", "X", "TK"].map((platform) => (
-                <MagneticWrapper key={platform} strength={0.4}>
-                  <a
-                    href="#"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-dark/8 font-[family-name:var(--font-montserrat)] text-[0.625rem] font-semibold text-text-secondary transition-all duration-300 hover:border-dark/20 hover:text-text-primary"
-                  >
-                    {platform}
-                  </a>
-                </MagneticWrapper>
-              ))}
+              <MagneticWrapper strength={0.4}>
+                <a
+                  href="https://instagram.com/policythatsticks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-dark/8 font-[family-name:var(--font-montserrat)] text-[0.625rem] font-semibold text-text-secondary transition-all duration-300 hover:border-dark/20 hover:text-text-primary"
+                >
+                  IG
+                </a>
+              </MagneticWrapper>
             </div>
           </div>
 

@@ -89,7 +89,7 @@ export function Candidates() {
         style={slideLeft(headerVisible)}
       >
         <span className="text-label text-text-muted">Your Candidates</span>
-        <h2 className="mt-3 text-display-md text-text-primary">
+        <h2 className="mt-1.5 text-display-md text-text-primary">
           Meet the <em className="font-[family-name:var(--font-cormorant)] text-gold">team.</em>
         </h2>
       </div>

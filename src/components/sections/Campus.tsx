@@ -20,7 +20,7 @@ const images = [
   { src: "/campus/community.jpg", alt: "Belmont community",         caption: "Community",     width: "", speed: 0.1  },
 ];
 
-function GalleryItemDesktop({ img }: { img: (typeof images)[0] }) {
+function GalleryItemDesktop({ img, index, gridVisible }: { img: (typeof images)[0]; index: number; gridVisible: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [img.speed * 100, img.speed * -100]);
@@ -30,6 +30,7 @@ function GalleryItemDesktop({ img }: { img: (typeof images)[0] }) {
     <div
       ref={ref}
       className={`group relative min-h-[240px] overflow-hidden rounded-2xl lg:aspect-[4/3] lg:min-h-0 ${img.width}`}
+      style={fadeUp(gridVisible, index * 60)}
     >
       <motion.div className="absolute inset-0" style={{ y, scale }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -54,7 +55,7 @@ function GalleryItemDesktop({ img }: { img: (typeof images)[0] }) {
 function GalleryItem({ img, index, gridVisible }: { img: (typeof images)[0]; index: number; gridVisible: boolean }) {
   const isMobile = useIsMobile();
 
-  if (!isMobile) return <GalleryItemDesktop img={img} />;
+  if (!isMobile) return <GalleryItemDesktop img={img} index={index} gridVisible={gridVisible} />;
 
   return (
     <div
@@ -82,7 +83,7 @@ export function Campus() {
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
         <div ref={headerRef} className="mb-12 max-w-xl md:mb-16" style={slideLeft(headerVisible)}>
           <span className="text-label text-text-muted">Campus Life</span>
-          <h2 className="mt-3 text-display-md text-text-primary">
+          <h2 className="mt-1.5 text-display-md text-text-primary">
             This is <em className="font-[family-name:var(--font-cormorant)] text-gold">our</em>{" "}
             Belmont.
           </h2>

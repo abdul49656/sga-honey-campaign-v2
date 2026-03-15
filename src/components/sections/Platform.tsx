@@ -129,7 +129,7 @@ export function Platform() {
         style={{ paddingTop: "var(--section-pad-y)", ...slideLeft(headerVisible) }}
       >
         <span className="text-label text-text-muted">Our Platform</span>
-        <h2 className="mt-3 text-display-md text-text-primary">
+        <h2 className="mt-1.5 text-display-md text-text-primary">
           Four pillars for a{" "}
           <em className="font-[family-name:var(--font-cormorant)] text-gold">brighter</em>{" "}
           Belmont.
