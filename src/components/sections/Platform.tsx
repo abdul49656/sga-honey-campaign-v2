@@ -10,11 +10,11 @@ const pillars = [
     number: "01",
     title: "Fitness",
     summary:
-      "Advocating for expanded workout spaces and equipment across campus, including opening the Benz Hall fitness space and adding a Smith machine, more cardio machines, and free weights to relieve overcrowding at FitRec.",
+      "Students have consistently raised concerns about overcrowding at FitRec and limited access to certain equipment across campus facilities. When workout spaces are overcrowded or lack necessary resources, it creates barriers that make it difficult for students to maintain consistent and healthy routines.",
     details: [
-      "Open the workout space in Benz Hall with accessible cardio machines and low-weight dumbbells to create an additional fitness option and reduce congestion at FitRec.",
-      "Communicate directly with university leadership about expanding equipment across campus facilities, including a Smith machine, more cardio machines, and expanded free weights.",
-      "Through consistent advocacy and strong communication with administration, work to make fitness at Belmont more accessible, convenient, and supportive of student well-being.",
+      "Our goal is to advocate for practical solutions that directly address these concerns. One opportunity is opening the workout space in Benz Hall with accessible cardio machines and low-weight dumbbells. This would create an additional fitness space that helps relieve congestion at FitRec while making exercise more convenient for students living and studying nearby.",
+      "We also plan to communicate directly with university leadership about expanding access to additional equipment across campus facilities, including a Smith machine, more cardio machines, and expanded free weights.",
+      "Through strong communication with administration and consistent advocacy for student needs, we will work to make fitness opportunities at Belmont more accessible, convenient, and supportive of student well-being.",
     ],
   },
   {
@@ -22,11 +22,10 @@ const pillars = [
     number: "02",
     title: "Fuel",
     summary:
-      "Ensuring campus dining reflects the diversity of Belmont's student body by exploring halal and kosher preparation standards and working with dining leadership to expand inclusive, clearly labeled food options.",
+      "Food access on campus should meet the needs of every student. Belmont is home to students from a wide range of cultural and religious backgrounds, and it is important that dining options reflect that diversity.",
     details: [
-      "Explore halal and kosher food preparation standards and work closely with campus dining leadership and the campus dietitian to better understand how these dietary needs can be supported.",
-      "Ensure food options are properly prepared, clearly labeled, and accessible to students who observe these dietary practices.",
-      "Open conversations with dining services and university leadership to identify meaningful ways Belmont can expand inclusive dining options while maintaining high food safety standards.",
+      "Our campaign is committed to exploring halal and kosher food preparation standards and working closely with campus dining leadership and the campus dietitian to better understand how these dietary needs can be supported. This includes ensuring that food options are properly prepared, clearly labeled, and accessible to students who observe these dietary practices.",
+      "By opening conversations with dining services and university leadership, we hope to identify meaningful ways Belmont can expand inclusive dining options while maintaining high standards of food safety and preparation.",
     ],
   },
   {
@@ -34,23 +33,22 @@ const pillars = [
     number: "03",
     title: "Make Belmont Your Stage",
     summary:
-      "Expanding performance and creative opportunities through SGA's new partnership with the Cookery and better utilization of underused campus venues like The Well, Curb Cafe, and the new event BUILD.",
+      "Belmont is known for its creativity, talent, and artistic culture, yet many students have shared concerns about limited access to performance and rehearsal spaces across campus.",
     details: [
-      "Leverage SGA's new partnership with the Cookery, giving students access to a stage for performances, showcases, and creative events.",
-      "Advocate for better awareness and utilization of existing venues like The Well, Curb Cafe, and the new event BUILD for student performances, cultural programming, and WELLCORE events.",
-      "By promoting and activating underused spaces, create more opportunities for students to perform, connect, and celebrate Belmont's creative community.",
+      "Through SGA's new partnership with the Cookery, students now have access to a stage that can be used for future performances, student showcases, and creative events. This partnership represents an exciting step toward expanding opportunities for students to share their work and collaborate across disciplines.",
+      "Our goal is to continue advocating for better awareness and utilization of existing venues across campus. Spaces such as The Well, Curb Cafe, and the new event BUILD have strong potential to host student performances, cultural programming, and WELLCORE events.",
+      "By promoting and activating underused spaces, Belmont can create more opportunities for students to perform, connect, and celebrate the creative community that makes this campus unique.",
     ],
   },
   {
     emoji: "💡",
     number: "04",
-    title: "Campus Lighting & Safety",
+    title: "Campus Lighting and Safety",
     summary:
-      "Improving safety after dark by advocating for better lighting in poorly lit areas like between Beaman and Gabhart, plus adding tables, seating, and string lights to make walkways more welcoming.",
+      "Campus safety is a priority for every student, especially after dark. Several areas across Belmont have been identified by students as being poorly lit, including the space between Beaman and Gabhart, which many students walk through in the evening.",
     details: [
-      "Advocate for additional lighting in areas identified by students as poorly lit, including the space between Beaman and Gabhart.",
-      "Push for tables, seating, and string lights to transform dark areas into welcoming, populated spaces that feel safer at all hours.",
-      "Work directly with university administration and campus safety leadership to deliver practical improvements that make Belmont's walkways safer, brighter, and more comfortable.",
+      "Improving lighting in these areas is a simple but meaningful step that can help students feel safer while moving across campus. Our campaign will advocate for additional lighting, as well as the addition of tables, seating, and string lights that would help transform the area into a more welcoming and populated space.",
+      "By working directly with university administration and campus safety leadership, we will advocate for practical improvements that make Belmont's walkways safer, brighter, and more comfortable for students at all hours of the day.",
     ],
   },
 ];
@@ -102,7 +100,7 @@ function PillarCard({
         {/* Expandable details */}
         <AnimatePresence>
           {expanded && (
-            <motion.ul
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
@@ -110,15 +108,14 @@ function PillarCard({
               className="flex flex-col gap-4 overflow-hidden"
             >
               {pillar.details.map((detail, i) => (
-                <li
+                <p
                   key={i}
-                  className="flex gap-3 font-[family-name:var(--font-montserrat)] text-[0.875rem] leading-[1.8] text-text-secondary"
+                  className="font-[family-name:var(--font-montserrat)] text-[0.875rem] leading-[1.8] text-text-secondary"
                 >
-                  <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                  <span>{detail}</span>
-                </li>
+                  {detail}
+                </p>
               ))}
-            </motion.ul>
+            </motion.div>
           )}
         </AnimatePresence>
 
