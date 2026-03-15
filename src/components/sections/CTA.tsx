@@ -1,23 +1,46 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { TextSwapButton } from "@/components/ui/TextSwapButton";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function CTA() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.05, 1]);
+
   return (
     <section
+      ref={sectionRef}
       className="relative overflow-hidden bg-dark"
       style={{ padding: "clamp(8rem, 16vh, 14rem) var(--section-pad-x)" }}
     >
-      {/* Pulsing radial gold glow */}
-      <div
-        className="animate-pulse-glow pointer-events-none absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse at 50% 50%, rgba(253,206,0,0.15) 0%, transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
+      {/* Background campaign photo with parallax */}
+      <motion.div
+        className="absolute inset-0"
+        style={isMobile ? {} : { y: bgY, scale: bgScale }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/campaign/duo-walking-fountain.jpg"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover"
+          style={{ objectPosition: "center 30%" }}
+        />
+      </motion.div>
+
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-dark/75" />
 
       <div className="relative mx-auto max-w-[90rem]">
         <div className="mx-auto max-w-3xl text-center">
@@ -38,7 +61,7 @@ export function CTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 font-[family-name:var(--font-dm-sans)] text-[0.9375rem] text-white/65"
+            className="mt-6 font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-white/65"
           >
             Your vote is your voice. Make it count.
           </motion.p>

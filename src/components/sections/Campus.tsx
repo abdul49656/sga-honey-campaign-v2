@@ -6,9 +6,9 @@ import { TextReveal } from "@/components/ui/TextReveal";
 
 const images = [
   {
-    src: "/campus/outcomes.jpg",
-    alt: "Belmont University campus outcomes",
-    caption: "Outcomes That Matter",
+    src: "/campaign/duo-fountain-wave.jpg",
+    alt: "Daugherty & Honey waving at the Belmont fountain",
+    caption: "For Every Bruin",
     width: "lg:col-span-2 lg:row-span-2",
     speed: 0.12,
   },
@@ -104,7 +104,7 @@ export function Campus() {
             This is <em className="font-[family-name:var(--font-cormorant)] text-gold">our</em>{" "}
             <TextReveal>Belmont.</TextReveal>
           </h2>
-          <p className="mt-4 max-w-md font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.7] text-text-secondary">
+          <p className="mt-4 max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-text-secondary">
             A campus that inspires, connects, and supports every student.
           </p>
         </motion.div>

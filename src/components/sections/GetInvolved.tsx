@@ -3,6 +3,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { TextSwapButton } from "@/components/ui/TextSwapButton";
 import { cn } from "@/lib/utils";
 
@@ -15,17 +16,18 @@ const contactItems = [
   { emoji: "🕐", label: "Office Hours", value: "Tues & Thurs, 3\u20135 PM" },
 ];
 
-const interestOptions = [
-  "Volunteer",
-  "Spread the Word",
-  "Ask a Question",
-  "Say Hi",
+const classYearOptions = [
+  "Freshman",
+  "Sophomore",
+  "Junior",
+  "Senior",
 ];
 
 export function GetInvolved() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [interest, setInterest] = useState("");
+  const [classYear, setClassYear] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
+  const isMobile = useIsMobile();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,13 +43,13 @@ export function GetInvolved() {
 
     setStatus("sending");
 
-    const body = new URLSearchParams({ name, email, interest, message });
+    const body = new URLSearchParams({ name, email, interest: classYear, message });
 
     try {
       await fetch(GOOGLE_SHEET_URL, { method: "POST", mode: "no-cors", body });
       setStatus("sent");
       form.reset();
-      setInterest("");
+      setClassYear("");
       setTimeout(() => setStatus("idle"), 4000);
     } catch {
       setStatus("error");
@@ -65,10 +67,10 @@ export function GetInvolved() {
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
           {/* Left — Info */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: isMobile ? 0.35 : 0.8, ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1] }}
           >
             <span className="text-label text-text-muted">Get Involved</span>
             <h2 className="mt-3 text-display-md text-text-primary">
@@ -77,7 +79,7 @@ export function GetInvolved() {
                 <TextReveal>Hive.</TextReveal>
               </em>
             </h2>
-            <p className="mt-4 max-w-md font-[family-name:var(--font-dm-sans)] text-[0.9375rem] leading-[1.7] text-text-secondary">
+            <p className="mt-4 max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-text-secondary">
               Whether you want to volunteer, ask a question, or just connect —
               we want to hear from you.
             </p>
@@ -87,13 +89,13 @@ export function GetInvolved() {
                   <motion.div
                     key={item.label}
                     className="group flex items-center gap-5"
-                    initial={{ opacity: 0, x: -16 }}
+                    initial={{ opacity: 0, x: isMobile ? 0 : -16 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{
-                      duration: 0.6,
-                      delay: 0.1 + i * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
+                      duration: isMobile ? 0.35 : 0.6,
+                      delay: isMobile ? 0 : 0.1 + i * 0.08,
+                      ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1],
                     }}
                   >
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-dark/15 bg-white shadow-sm transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold/5">
@@ -103,7 +105,7 @@ export function GetInvolved() {
                       <span className="block text-label text-[0.6rem] text-text-muted">
                         {item.label}
                       </span>
-                      <span className="font-[family-name:var(--font-dm-sans)] text-[0.9375rem] text-text-secondary">
+                      <span className="font-[family-name:var(--font-montserrat)] text-[0.9375rem] text-text-secondary">
                         {item.value}
                       </span>
                     </div>
@@ -114,10 +116,10 @@ export function GetInvolved() {
 
           {/* Right — Form */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: isMobile ? 0.35 : 0.8, delay: isMobile ? 0 : 0.1, ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1] }}
           >
             <form
               ref={formRef}
@@ -146,17 +148,17 @@ export function GetInvolved() {
               {/* Interest — text toggles */}
               <div>
                 <span className="text-label text-[0.6rem] text-text-muted">
-                  I want to...
+                  I am a...
                 </span>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {interestOptions.map((opt) => (
+                  {classYearOptions.map((opt) => (
                     <button
                       key={opt}
                       type="button"
-                      onClick={() => setInterest(opt)}
+                      onClick={() => setClassYear(opt)}
                       className={cn(
-                        "rounded-full border px-4 py-2 font-[family-name:var(--font-figtree)] text-[0.75rem] font-semibold transition-all duration-300",
-                        interest === opt
+                        "rounded-full border px-4 py-2 font-[family-name:var(--font-montserrat)] text-[0.75rem] font-semibold transition-all duration-300",
+                        classYear === opt
                           ? "border-dark bg-dark text-white"
                           : "border-dark/10 text-text-secondary hover:border-dark/25"
                       )}
