@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const images = [
   {
@@ -43,7 +44,8 @@ const images = [
   },
 ];
 
-function GalleryItem({ img }: { img: (typeof images)[0] }) {
+// Desktop: full scroll-parallax version
+function GalleryItemDesktop({ img }: { img: (typeof images)[0] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -71,10 +73,8 @@ function GalleryItem({ img }: { img: (typeof images)[0] }) {
         />
       </motion.div>
 
-      {/* Subtle permanent tint for depth */}
       <div className="absolute inset-0 bg-black/10 transition-opacity duration-500 group-hover:bg-black/0" />
 
-      {/* Caption on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute bottom-0 left-0 right-0 p-5">
           <span className="text-label text-[0.625rem] text-white/90">
@@ -86,7 +86,38 @@ function GalleryItem({ img }: { img: (typeof images)[0] }) {
   );
 }
 
+// Mobile: no scroll listeners, pure CSS opacity fade via Framer Motion whileInView
+function GalleryItemMobile({ img, index }: { img: (typeof images)[0]; index: number }) {
+  return (
+    <motion.div
+      className={`group relative min-h-[220px] overflow-hidden rounded-2xl ${img.width}`}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, delay: index * 0.04, ease: "easeOut" }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={img.src}
+        alt={img.alt}
+        loading="lazy"
+        className="h-full w-full object-cover"
+        style={{ objectPosition: img.objectPosition || "center center" }}
+      />
+    </motion.div>
+  );
+}
+
+function GalleryItem({ img, index }: { img: (typeof images)[0]; index: number }) {
+  const isMobile = useIsMobile();
+  return isMobile
+    ? <GalleryItemMobile img={img} index={index} />
+    : <GalleryItemDesktop img={img} />;
+}
+
 export function Campus() {
+  const isMobile = useIsMobile();
+
   return (
     <section
       id="campus"
@@ -95,10 +126,10 @@ export function Campus() {
     >
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: isMobile ? 0.4 : 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-12 max-w-xl md:mb-16"
         >
           <span className="text-label text-text-muted">Campus Life</span>
@@ -115,8 +146,8 @@ export function Campus() {
       {/* Gallery grid — full bleed */}
       <div className="mx-auto max-w-[90rem] px-3 md:px-6 lg:px-10">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 md:gap-3">
-          {images.map((img) => (
-            <GalleryItem key={img.caption} img={img} />
+          {images.map((img, i) => (
+            <GalleryItem key={img.caption} img={img} index={i} />
           ))}
         </div>
       </div>

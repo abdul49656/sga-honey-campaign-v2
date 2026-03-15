@@ -1,34 +1,62 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+// Directly writes textContent via requestAnimationFrame — no React re-renders,
+// no Framer Motion motion value chain. Much smoother on mobile.
 function AnimatedNumber({ value, delay }: { value: number; delay: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => {
-    if (value >= 1000) {
-      return Math.round(latest).toLocaleString("en-US");
-    }
-    return Math.round(latest).toString();
-  });
 
   useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, value, {
-        duration: 2,
-        delay,
-        ease: [0.16, 1, 0.3, 1],
-      });
-      return controls.stop;
-    }
-  }, [isInView, value, delay, count]);
+    const el = ref.current;
+    if (!el) return;
 
-  return <motion.span ref={ref}>{rounded}</motion.span>;
+    el.textContent = "0";
+    let raf = 0;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+
+        const startTime = performance.now() + delay * 1000;
+        const duration = 2000;
+
+        function step(now: number) {
+          const elapsed = now - startTime;
+          if (elapsed < 0) {
+            raf = requestAnimationFrame(step);
+            return;
+          }
+          const t = Math.min(elapsed / duration, 1);
+          // Ease-out expo
+          const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+          const current = Math.round(eased * value);
+          if (el) {
+            el.textContent =
+              value >= 1000
+                ? current.toLocaleString("en-US")
+                : current.toString();
+          }
+          if (t < 1) raf = requestAnimationFrame(step);
+        }
+
+        raf = requestAnimationFrame(step);
+      },
+      { rootMargin: "-80px", threshold: 0 }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [value, delay]);
+
+  return <span ref={ref}>0</span>;
 }
-
 
 interface StatProps {
   value: number;
@@ -39,12 +67,9 @@ interface StatProps {
 
 function StatItem({ value, suffix, label, delay }: StatProps) {
   const isMobile = useIsMobile();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <motion.div
-      ref={ref}
       className="flex flex-1 flex-col items-center rounded-3xl border border-white/[0.12] bg-white/[0.06] px-6 py-10 text-center md:px-8 md:py-12"
       initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +77,7 @@ function StatItem({ value, suffix, label, delay }: StatProps) {
       transition={{
         duration: isMobile ? 0.4 : 0.7,
         delay: isMobile ? 0 : delay,
-        ease: isMobile ? [0.25, 0, 0.25, 1] : [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1],
       }}
     >
       <span className="text-display-lg text-gold">
@@ -60,21 +85,10 @@ function StatItem({ value, suffix, label, delay }: StatProps) {
         {suffix}
       </span>
 
-      <motion.div
-        className="mt-5 flex flex-col items-center gap-3"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{
-          duration: isMobile ? 0.3 : 0.6,
-          delay: isMobile ? 0.1 : delay + 0.5,
-          ease: [0.25, 0, 0.25, 1],
-        }}
-      >
+      <div className="mt-5 flex flex-col items-center gap-3">
         <div className="h-px w-8 bg-gold/40" />
-        <span className="text-label text-white/75">
-          {label}
-        </span>
-      </motion.div>
+        <span className="text-label text-white/75">{label}</span>
+      </div>
     </motion.div>
   );
 }
