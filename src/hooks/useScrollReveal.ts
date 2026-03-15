@@ -56,7 +56,7 @@ export function slideRight(visible: boolean, delay = 0): CSSProperties {
 export function fadeUp(visible: boolean, delay = 0): CSSProperties {
   return {
     opacity: visible ? 1 : 0,
-    transform: visible ? "translateY(0)" : "translateY(32px)",
+    transform: visible ? "translateY(0)" : "translateY(64px)",
     transition: t(delay),
     willChange: visible ? "auto" : "transform, opacity",
   };

@@ -11,9 +11,28 @@ const photos = [
   { src: "/campaign/duo-lobby.jpg", alt: "Daugherty & Honey in the campus lobby" },
 ];
 
+function GalleryPhoto({ src, alt }: { src: string; alt: string }) {
+  const { ref, visible } = useScrollReveal();
+
+  return (
+    <div
+      ref={ref}
+      className="group aspect-[3/4] overflow-hidden rounded-2xl lg:rounded-3xl"
+      style={fadeUp(visible)}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+      />
+    </div>
+  );
+}
+
 export function PhotoGallery() {
   const { ref: headerRef, visible: headerVisible } = useScrollReveal();
-  const { ref: gridRef, visible: gridVisible } = useScrollReveal();
 
   return (
     <section className="bg-cream-deep pb-0">
@@ -28,21 +47,9 @@ export function PhotoGallery() {
       </div>
 
       <div className="mx-auto max-w-[90rem] px-3 md:px-6 lg:px-10">
-        <div ref={gridRef} className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:gap-4">
-          {photos.map((photo, i) => (
-            <div
-              key={photo.src}
-              className="group aspect-[3/4] overflow-hidden rounded-2xl lg:rounded-3xl"
-              style={fadeUp(gridVisible, i * 70)}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                loading="lazy"
-                className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-              />
-            </div>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:gap-4">
+          {photos.map((photo) => (
+            <GalleryPhoto key={photo.src} src={photo.src} alt={photo.alt} />
           ))}
         </div>
       </div>

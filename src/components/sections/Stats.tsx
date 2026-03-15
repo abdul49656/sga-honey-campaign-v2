@@ -43,16 +43,14 @@ function AnimatedNumber({ value, delay }: { value: number; delay: number }) {
   return <span ref={ref}>0</span>;
 }
 
-function StatItem({
-  value, suffix, label, delay, visible, staggerIndex,
-}: {
-  value: number; suffix: string; label: string; delay: number;
-  visible: boolean; staggerIndex: number;
-}) {
+function StatItem({ value, suffix, label, delay }: { value: number; suffix: string; label: string; delay: number }) {
+  const { ref, visible } = useScrollReveal();
+
   return (
     <div
+      ref={ref}
       className="flex flex-1 flex-col items-center rounded-3xl border border-white/[0.12] bg-white/[0.06] px-6 py-10 text-center md:px-8 md:py-12"
-      style={fadeUp(visible, staggerIndex * 120)}
+      style={fadeUp(visible)}
     >
       <span className="text-display-lg text-gold">
         <AnimatedNumber value={value} delay={delay} />
@@ -67,15 +65,13 @@ function StatItem({
 }
 
 export function Stats() {
-  const { ref: gridRef, visible } = useScrollReveal();
-
   return (
     <section className="bg-dark py-16 md:py-24">
       <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-14">
-        <div ref={gridRef} className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
-          <StatItem value={8975} suffix="+" label="Students Represented" delay={0}    visible={visible} staggerIndex={0} />
-          <StatItem value={4}    suffix=""  label="Bold Platform Pillars" delay={0.12} visible={visible} staggerIndex={1} />
-          <StatItem value={1}    suffix=""  label="Golden Vision"         delay={0.24} visible={visible} staggerIndex={2} />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
+          <StatItem value={8975} suffix="+" label="Students Represented" delay={0} />
+          <StatItem value={4}    suffix=""  label="Bold Platform Pillars" delay={0.12} />
+          <StatItem value={1}    suffix=""  label="Golden Vision"         delay={0.24} />
         </div>
       </div>
     </section>

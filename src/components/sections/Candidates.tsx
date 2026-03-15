@@ -47,8 +47,7 @@ function CandidateBlock({
             <img
               src={candidate.photo}
               alt={candidate.name}
-              loading="lazy"
-              decoding="async"
+              loading="eager"
               className="h-full w-full object-cover"
               style={{ objectPosition: candidate.cropPosition }}
             />

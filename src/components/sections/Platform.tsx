@@ -53,23 +53,17 @@ const pillars = [
   },
 ];
 
-function PillarCard({
-  pillar,
-  visible,
-  staggerIndex,
-}: {
-  pillar: (typeof pillars)[0];
-  visible: boolean;
-  staggerIndex: number;
-}) {
+function PillarCard({ pillar }: { pillar: (typeof pillars)[0] }) {
   const [expanded, setExpanded] = useState(false);
+  const { ref, visible } = useScrollReveal();
 
   return (
     <div
+      ref={ref}
       className="group relative overflow-hidden rounded-3xl bg-white p-8 transition-shadow duration-500 hover:shadow-xl md:p-10"
       style={{
         boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06)",
-        ...fadeUp(visible, staggerIndex * 80),
+        ...fadeUp(visible),
       }}
     >
       <div className="relative flex flex-col gap-5">
@@ -125,7 +119,7 @@ function PillarCard({
 
 export function Platform() {
   const { ref: headerRef, visible: headerVisible } = useScrollReveal();
-  const { ref: gridRef, visible: gridVisible } = useScrollReveal();
+  const { ref: gridRef } = useScrollReveal();
 
   return (
     <section id="platform" className="bg-cream-deep">
@@ -147,8 +141,8 @@ export function Platform() {
         className="mx-auto mt-12 max-w-[90rem] px-6 pb-16 md:mt-16 md:px-10 md:pb-24 lg:px-14"
       >
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-          {pillars.map((pillar, i) => (
-            <PillarCard key={pillar.number} pillar={pillar} visible={gridVisible} staggerIndex={i} />
+          {pillars.map((pillar) => (
+            <PillarCard key={pillar.number} pillar={pillar} />
           ))}
         </div>
       </div>
