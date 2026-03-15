@@ -66,15 +66,14 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-label text-white/55"
         >
-          Belmont University &mdash; SGA 2026
+          Belmont University | SGA 2026
         </motion.span>
 
         {/* Massive headline */}
         {isMobile ? (
           <div className="text-display-hero mt-5 text-white"
-               style={{ fontSize: "28vw", lineHeight: 0.88 }}>
+               style={{ fontSize: "clamp(3.5rem, 18vw, 8rem)", lineHeight: 0.88 }}>
             <motion.div
-              className="whitespace-nowrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}

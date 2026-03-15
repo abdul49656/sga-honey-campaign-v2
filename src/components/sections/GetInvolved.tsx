@@ -80,7 +80,7 @@ export function GetInvolved() {
               </em>
             </h2>
             <p className="mt-4 max-w-md font-[family-name:var(--font-montserrat)] text-[0.9375rem] leading-[1.7] text-text-secondary">
-              Whether you want to volunteer, ask a question, or just connect —
+              Whether you want to volunteer, ask a question, or just connect,
               we want to hear from you.
             </p>
 

@@ -20,7 +20,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Daugherty & Honey — Make It Golden | Belmont SGA 2026",
+  title: "Daugherty & Honey | Make It Golden | Belmont SGA 2026",
   description:
     "Vote Daugherty & Honey for Belmont SGA President & Vice President 2026. A golden vision for student wellness, campus unity, academic advocacy, and sustainability.",
 };
