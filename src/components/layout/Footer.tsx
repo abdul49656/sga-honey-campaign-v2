@@ -10,16 +10,6 @@ const footerLinks = {
     { label: "Campus Life", href: "#campus" },
     { label: "Get Involved", href: "#involved" },
   ],
-  "Belmont SGA": [
-    { label: "Official SGA Page", href: "#" },
-    { label: "Student Senate", href: "#" },
-    { label: "Election Info", href: "#" },
-  ],
-  Campaign: [
-    { label: "Press Kit", href: "#" },
-    { label: "Media Inquiries", href: "#" },
-    { label: "Volunteer", href: "#involved" },
-  ],
 };
 
 export function Footer() {
@@ -31,7 +21,7 @@ export function Footer() {
     <footer className="border-t border-dark/[0.06] bg-cream">
       <div className="mx-auto max-w-[90rem] px-6 py-16 md:px-10 md:py-20 lg:px-14">
         {/* Main grid */}
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[2fr_1fr]">
           {/* Brand */}
           <div>
             <span className="font-[family-name:var(--font-cormorant)] text-xl font-bold tracking-[-0.02em]">

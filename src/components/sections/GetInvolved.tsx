@@ -11,9 +11,8 @@ const GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbxT5KQsuLEFscY4drvf_FSMxHaOl3Ogs7p4q3f3NTKX9FoPhPY5LfzN19zTrWWy_E93og/exec";
 
 const contactItems = [
-  { emoji: "📧", label: "Email", value: "campaign@belmont.edu" },
-  { emoji: "📸", label: "Instagram", value: "@daugherty.honey" },
-  { emoji: "🕐", label: "Office Hours", value: "Tues & Thurs, 3\u20135 PM" },
+  { emoji: "📧", label: "Email", value: "abigail.daugherty@bruins.belmont.edu" },
+  { emoji: "📸", label: "Instagram", value: "@policythatsticks" },
 ];
 
 const classYearOptions = [
