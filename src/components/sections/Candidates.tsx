@@ -9,7 +9,7 @@ const candidates = [
     role: "President",
     photo: "/campaign/headshot-abi.jpg",
     cropPosition: "25% 15%",
-    bio: "Committed to amplifying every student voice on campus. With experience in student senate and a passion for mental health advocacy, Abi brings the leadership Belmont needs to thrive.",
+    bio: "Abi Daugherty is humbled to serve as your current Student Government Association Vice President. This year, she has collaborated with SGA Leadership to establish a partnership between SGA and the Cookery, providing students with a new practice and performance space that will be available for future use. She has developed surveys with her peers to gather student data on parking/traffic, FitRec concerns, and JAAC furniture and has presented this data to upper-administration. She is extremely passionate about Belmont SGA, and as your President she will continue going the extra mile to advocate for every student that calls Belmont home!",
   },
   {
     initial: "H",
@@ -17,7 +17,7 @@ const candidates = [
     role: "Vice President",
     photo: "/campaign/headshot-dia.jpg",
     cropPosition: "center 15%",
-    bio: "A bridge-builder focused on campus unity and inclusion. Dia\u2019s background in community organizing and sustainability initiatives ensures every Bruin has a seat at the table.",
+    bio: "Dia Honey is proud to serve on the current Student Government Association Cabinet. This year, she has revitalized a student outreach committee within SGA, creating opportunities for SGA to interact with student organizations on campus. By establishing this bridge, many organizations have found it much easier to contact SGA and request funding. As your Vice President, Dia Honey will continue going the extra mile to connect with student organizations on campus, and advocate for their needs.",
   },
 ];
 
