@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   title: "Daugherty & Honey | Make It Golden | Belmont SGA 2026",
   description:
     "Vote Daugherty & Honey for Belmont SGA President & Vice President 2026. A golden vision for student wellness, campus unity, academic advocacy, and sustainability.",
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍯</text></svg>",
+  },
 };
 
 export default function RootLayout({
