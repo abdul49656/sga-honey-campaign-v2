@@ -17,7 +17,7 @@ const candidates = [
     role: "Vice President",
     photo: "/campaign/headshot-dia.jpg",
     cropPosition: "center 15%",
-    bio: "Dia Honey is proud to serve on the current Student Government Association Cabinet. This year, she has revitalized a student outreach committee within SGA, creating opportunities for SGA to interact with student organizations on campus. By establishing this bridge, many organizations have found it much easier to contact SGA and request funding. As your Vice President, Dia Honey will continue going the extra mile to connect with student organizations on campus, and advocate for their needs.",
+    bio: "Dia Honey is proud to serve on the current Student Government Association Cabinet as DEI Chair. This year, she has revitalized a student outreach committee within SGA, creating opportunities for SGA to interact with student organizations on campus. By establishing this bridge, many organizations have found it much easier to contact SGA and request funding. As your Vice President, Dia Honey will continue going the extra mile to connect with student organizations on campus, and advocate for their needs.",
   },
 ];
 
